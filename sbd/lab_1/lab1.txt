@@ -1,0 +1,66 @@
+1. Запустили сервер
+/Users/tony_19/Mongo/mongodb-macos-aarch64--8.2.4/bin
+./mongod --dbpath /Users/tony_19/Mongo/mongodb-macos-aarch64--8.2.4/bin
+
+2. Создали бд
+use tony_db
+
+3. Создали колекцию
+db.createCollection('tony_collection')
+
+4. Заполнили колекцию
+db.tony_collection.insertMany(данные из файла)
+
+5. Просмотр колекции
+db.tony_collection.find()
+
+6. Запросы
+
+Найти все BMW с мощностью более 250 л.с., произведенные после 
+2021 года. Отобразить только поля brand, model, cost, power, 
+production_date, исключить поле _id из вывода.
+
+db.tony_collection.find({
+  brand:'BMW',
+  power:{$gt:250},
+  production_date:{$gt:ISODate('2021-12-31T23:59:59.999Z')}
+},{
+  _id:0,
+  brand:1,
+  model:1,
+  cost:1,
+  power:1,
+  production_date:1
+})
+
+Найти пять автомобилей: либо с оценкой
+больше 4.5 и (панорамной крышей или проекционным дисплеем),
+либо без санкций и стоимостью до 6 млн.
+
+db.tony_collection.find({
+  $or:[
+    {$and:[{auction_evaluation:{$gt:4.5}},
+           {$or:[{equipment:'панорамная крыша'},
+                 {equipment:'проекционный дисплей'}]}]},
+    {$and:[{sanctions:false},{cost:{$lt:6000000}}]}]}).limit(5)
+
+Найти все автомобили владельцев с email в домене gmail.com, у которых есть 
+поле "equipment" хотя бы с 5 элементами. Отсортировать по 
+убыванию стоимости автомобилей
+
+db.tony_collection.find({
+  "owner.email": {"$regex": "@gmail\\.com$"},
+  "$expr": {"$gte": [ { "$size": "$equipment" }, 5 ] }
+}).sort({ cost: -1 })
+
+7. Защита
+db.tony_collection.find(
+  {
+    "owner.email": {$not: {"$regex": "bmw\\.ru$"}},
+  },
+  {
+    _id: 0,
+    brand: 1,
+    "owner.email": 1
+  }
+)
