@@ -119,7 +119,7 @@ fun NewsItemCard(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // Верхняя часть (90%) - новость
+            // Верхняя часть (90%)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -144,7 +144,6 @@ fun NewsItemCard(
                     lineHeight = 18.sp
                 )
 
-                // ID новости для отладки
                 Text(
                     text = "ID: ${newsItem.id}",
                     fontSize = 10.sp,
@@ -153,14 +152,13 @@ fun NewsItemCard(
                 )
             }
 
-            // Нижняя часть (10%) - лайки
+            // Нижняя часть (10%)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(0.1f),
                 contentAlignment = Alignment.Center
             ) {
-                // Кнопка лайка
                 Button(
                     onClick = onLikeClick,
                     enabled = newsItem.canLike,
@@ -192,7 +190,6 @@ fun NewsItemCard(
 
                         Spacer(modifier = Modifier.width(8.dp))
 
-                        // Анимированный счетчик
                         Text(
                             text = "$animatedLikes",
                             fontSize = 18.sp,
@@ -200,7 +197,6 @@ fun NewsItemCard(
                             color = Color.White
                         )
 
-                        // Статус лайка
                         if (!newsItem.canLike) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
