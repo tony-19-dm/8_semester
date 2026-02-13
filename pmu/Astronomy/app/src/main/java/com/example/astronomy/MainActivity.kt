@@ -1,5 +1,7 @@
 package com.example.astronomy
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,26 +23,25 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                NewsScreen()
+                // ✅ Передаём контекст явно
+                NewsScreen(context = this)
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewsScreen(newsViewModel: NewsViewModel = viewModel()) {
-    // Подписываемся на изменения
+fun NewsScreen(
+    context: Context, // 👈 явный параметр
+    newsViewModel: NewsViewModel = viewModel()
+) {
     val currentNews by newsViewModel.newsList.collectAsState()
 
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            // Заголовок
+        Column(modifier = Modifier.fillMaxSize()) {
             Text(
                 text = "Новостной справочник",
                 fontSize = 24.sp,
@@ -51,9 +52,7 @@ fun NewsScreen(newsViewModel: NewsViewModel = viewModel()) {
                 color = MaterialTheme.colorScheme.primary
             )
 
-            // Сетка новостей
             Column(modifier = Modifier.weight(1f)) {
-                // Первая строка
                 Row(modifier = Modifier.weight(1f)) {
                     if (currentNews.isNotEmpty()) {
                         NewsItemCard(
@@ -70,8 +69,6 @@ fun NewsScreen(newsViewModel: NewsViewModel = viewModel()) {
                         )
                     }
                 }
-
-                // Вторая строка
                 Row(modifier = Modifier.weight(1f)) {
                     if (currentNews.size >= 3) {
                         NewsItemCard(
@@ -89,6 +86,18 @@ fun NewsScreen(newsViewModel: NewsViewModel = viewModel()) {
                     }
                 }
             }
+
+            // ✅ Используем переданный context, без LocalContext.current
+            Button(
+                onClick = {
+                    context.startActivity(Intent(context, GalaxyActivity::class.java))
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text("🌌 Перейти в 3D: Галактика и Куб")
+            }
         }
     }
 }
@@ -99,7 +108,6 @@ fun NewsItemCard(
     onLikeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Анимация для счетчика лайков
     val animatedLikes by animateIntAsState(
         targetValue = newsItem.totalLikes,
         label = "likesAnimation"
@@ -119,31 +127,25 @@ fun NewsItemCard(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // Верхняя часть (90%)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(0.9f)
                     .padding(16.dp)
             ) {
-                // Заголовок
                 Text(
                     text = newsItem.title,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
-
                 Spacer(modifier = Modifier.height(8.dp))
-
-                // Содержание
                 Text(
                     text = newsItem.content,
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                     lineHeight = 18.sp
                 )
-
                 Text(
                     text = "ID: ${newsItem.id}",
                     fontSize = 10.sp,
@@ -151,8 +153,6 @@ fun NewsItemCard(
                     modifier = Modifier.padding(top = 8.dp)
                 )
             }
-
-            // Нижняя часть (10%)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -183,20 +183,14 @@ fun NewsItemCard(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "❤️",
-                            fontSize = 20.sp
-                        )
-
+                        Text(text = "❤️", fontSize = 20.sp)
                         Spacer(modifier = Modifier.width(8.dp))
-
                         Text(
                             text = "$animatedLikes",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
-
                         if (!newsItem.canLike) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
