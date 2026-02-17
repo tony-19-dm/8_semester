@@ -129,3 +129,55 @@ db.sales.insertMany(данные из файла)
         whenNotMatched: "insert"
     }
 }]
+
+db.avgAuction.find().forEach(function(avg) {
+  db.dealers.updateOne(
+    { name: avg._id },
+    { $set: { avgAuctionEvaluation: avg.avgAuctionEvaluation } }
+  );
+});
+
+4. Вывести названия и адреса автосалонов,
+у которых доля санкционных автомобилей превышает 50%.
+
+[
+  {
+    $group: {
+      _id: "$owner",
+      total: { $sum: 1 },
+      sanctions: {
+        $sum: { $cond: [{ $eq: ["$sanctions", true] }, 1, 0] }
+      }
+    }
+  },
+  {
+    $addFields: {
+      sanctionsShare: { $divide: ["$sanctions", "$total"] }
+    }
+  },
+  {
+    $match: { sanctionsShare: { $gt: 0.5 } }
+  },
+  {
+    $lookup: {
+      from: "dealers",
+      localField: "_id",
+      foreignField: "name",
+      as: "dealer"
+    }
+  },
+  { $unwind: "$dealer" },
+  {
+    $project: {
+      _id: 0,
+      name: "$dealer.name",
+      address: "$dealer.address"
+    }
+  },{
+    $merge: {
+        into: "sanctions",
+        whenMatched: "replace",
+        whenNotMatched: "insert"
+    }
+  }
+]
