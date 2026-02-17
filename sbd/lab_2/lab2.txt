@@ -1,0 +1,131 @@
+1. Создать новую коллекцию с названием sales 
+db.createCollection('sales')
+
+db.sales.insertMany(данные из файла)
+
+Посчитать статистику продаж каждого бренда автомобилей за 2020 и 2021 год.
+Статистика должна включать количество проданных автомобилей, а также суммарную
+стоимость за указанный период. Не учитывать бренды, количество продаж по
+которым, – меньше 2-х автомобилей за указанный период.
+Отсортировать в порядке убывания количества проданных автомобилей.
+На основании полученной статистики сформировать новые документы с полями:
+•	название (включает название бренда и год, по которому взята статистика),
+•	суммарную стоимость,
+•	рейтинг популярности (больше 6 продаж – «выбор миллионов»,
+4-6 продаж – «популярный», меньше 4 продаж – «нишевый»).
+Полученные документы поместить в новую коллекцию stats.
+
+[{
+    $match: {
+        production_date:{
+            $gte: ISODate('2020-01-01T00:00:00Z'),
+            $lt: ISODate('2022-01-01T00:00:00Z')
+        }
+    }
+},
+{
+    $group: {
+        _id: {
+            brand: "$brand",
+            year: { $year: "$production_date" }
+        },
+        totalSales: { $sum: 1 },
+        totalAmount: { $sum: "$cost" }
+    }
+},
+{
+    $match: {
+        totalSales: {$gte: 2}
+    }
+},
+{
+    $addFields: {
+        name: {
+            $concat: [
+                "$_id.brand",
+                " ",
+                { $toString: "$_id.year" }
+            ]
+        },
+        popularity: {
+            $switch: {
+                branches: [
+                    { case: {$gt: ["totalSales", 6]}, then : "выбор миллионов" },
+                    { case: {$gte: ["totalSales", 4]}, then : "популярный" }
+                ], default: "нишевый"
+            }
+        }
+    }
+},
+{
+    $sort: { totalSales: -1 }
+},
+{
+    $project: {
+        _id: 0,
+        name: 1,
+        totalAmount: 1,
+        popularity: 1
+    }
+},
+{
+    $merge: {
+        into: "ststus",
+        whenMatched: "replace",
+        whenNotMatched: "insert"
+    }
+}
+]
+
+2. Получить список всех доступных опций из коллекции sales
+для установки в автомобили каждого бренда.
+
+[
+  {
+    $unwind: "$equipment"
+  },
+  {
+    $group: {
+      _id: "$brand",
+      equipment: {
+        $addToSet: "$equipment"
+      }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      brand: "$_id",
+      equipment: 1
+    }
+  },
+  {
+    $merge: {
+      into: "brands",
+      whenMatched: "replace",
+      whenNotMatched: "insert"
+    }
+  }
+]
+
+3. Посчитать среднюю оценку аукциона автомобилей по каждому автосалону.
+Добавить полученную оценку к соответствующим автосалонам.
+
+[{
+  $match: {
+    owner: { $type: "string" }
+  }
+},
+{
+  $group: {
+    _id: "$owner",
+    avgAuctionEvaluation: { $avg: "$auction_evaluation" }
+  }
+},
+{
+    $merge: {
+        into: "avgAuction",
+        whenMatched: "replace",
+        whenNotMatched: "insert"
+    }
+}]

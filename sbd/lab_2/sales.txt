@@ -1,0 +1,1486 @@
+[
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "GLE",
+        "cost": 7200000,
+        "production_date": new Date("2021-03-15"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 245,
+        "equipment": ["панорамная крыша", "камеры 360", "вентилируемые сиденья", "мультимедийная система", "подогрев руля"],
+        "owner": {
+            "name": "Анна Смирнова",
+            "telephone": "+79161234567",
+            "email": "anna@yandex.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "Q7",
+        "cost": 6800000,
+        "production_date": new Date("2020-11-20"),
+        "auction_evaluation": 3.5,
+        "sanctions": true,
+        "power": 249,
+        "equipment": ["виртуальная приборная панель", "матричные фары", "камеры 360", "круиз-контроль"],
+        "owner": {
+            "name": "Петр Иванов",
+            "telephone": "+79269876543",
+            "email": "petr@mail.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Lexus",
+        "model": "RX",
+        "cost": 6500000,
+        "production_date": new Date("2022-01-10"),
+        "auction_evaluation": 5.0,
+        "sanctions": false,
+        "power": 235,
+        "equipment": ["панорамная крыша", "премиум-аудиосистема", "вентиляция сидений", "проекционный дисплей", "система безопасности", "беспроводная зарядка"],
+        "owner": {
+            "name": "Мария Козлова",
+            "telephone": "+79035557799",
+            "email": "maria@gmail.com"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Porsche",
+        "model": "Cayenne",
+        "cost": 8500000,
+        "production_date": new Date("2021-07-22"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 340,
+        "equipment": ["спортивный пакет", "кожаный салон", "адаптивный круиз-контроль", "спортивная выхлопная система"],
+        "owner": {
+            "name": "Алексей Волков",
+            "telephone": "+79184443322",
+            "email": "volkov@domain.com"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Volvo",
+        "model": "XC90",
+        "cost": 6200000,
+        "production_date": new Date("2020-12-05"),
+        "auction_evaluation": 3.0,
+        "sanctions": true,
+        "power": 250,
+        "equipment": ["система безопасности", "подогрев сидений", "климат-контроль", "панорамная крыша", "камеры 360", "круиз-контроль", "аудиосистема премиум"],
+        "owner": {
+            "name": "Елена Новикова",
+            "telephone": "+79261112233",
+            "email": "elena.nov@inbox.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Tesla",
+        "model": "Model X",
+        "cost": 9000000,
+        "production_date": new Date("2022-03-30"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 375,
+        "equipment": ["автопилот", "панорамное стекло", "игровая система", "премиум-аудио"],
+        "owner": {
+            "name": "Дмитрий Соколов",
+            "telephone": "+79036669988",
+            "email": "sokolov.d@tech.com"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X7",
+        "cost": 9500000,
+        "production_date": new Date("2021-09-18"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 340,
+        "equipment": ["сиденья с массажем", "система Gesture Control", "премиум-аудиосистема", "панорамная крыша", "проекционный дисплей"],
+        "owner": {
+            "name": "Сергей Морозов",
+            "telephone": "+79167778899",
+            "email": "morozov.sergey@bmw.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Land Rover",
+        "model": "Range Rover Sport",
+        "cost": 8800000,
+        "production_date": new Date("2020-08-14"),
+        "auction_evaluation": 3.5,
+        "sanctions": true,
+        "power": 300,
+        "equipment": ["внедорожные режимы", "пневмоподвеска", "термостекла", "камеры кругового обзора"],
+        "owner": {
+            "name": "Ольга Васнецова",
+            "telephone": "+79262223344",
+            "email": "vasnecova.o@lrclub.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Toyota",
+        "model": "Land Cruiser 300",
+        "cost": 8000000,
+        "production_date": new Date("2021-12-01"),
+        "auction_evaluation": 5.0,
+        "sanctions": false,
+        "power": 310,
+        "equipment": ["блокировки дифференциалов", "кинетический стабилизатор", "холодильник", "панорамные камеры", "вентиляция сидений"],
+        "owner": {
+            "name": "Игорь Лебедев",
+            "telephone": "+79035554466",
+            "email": "lebedev.ig@toyota.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X6",
+        "cost": 7800000,
+        "production_date": new Date("2021-04-25"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 265,
+        "equipment": ["спойлер", "спортивная подвеска", "M-пакет", "кожаный салон", "адаптивные фары"],
+        "owner": {
+            "name": "Николай Романов",
+            "telephone": "+79168889900",
+            "email": "romanov.n@car.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "Q8",
+        "cost": 8200000,
+        "production_date": new Date("2022-02-14"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 340,
+        "equipment": ["безрамочные двери", "OLED-фары", "премиум-звук", "панорамная крыша", "камеры 360", "массаж сидений"],
+        "owner": {
+            "name": "Алина Захарова",
+            "telephone": "+79260001122",
+            "email": "zaharova.a@audiclub.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "GLS",
+        "cost": 9200000,
+        "production_date": new Date("2020-10-30"),
+        "auction_evaluation": 3.5,
+        "sanctions": true,
+        "power": 330,
+        "equipment": ["E-Active Body Control", "сиденья бизнес-класса", "два 12.3-дюймовых экрана", "система ароматизации"],
+        "owner": {
+            "name": "Виктор Гришин",
+            "telephone": "+79163332211",
+            "email": "grishin.v@merc.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Volkswagen",
+        "model": "Touareg",
+        "cost": 5500000,
+        "production_date": new Date("2021-05-12"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 249,
+        "equipment": ["цифровая приборная панель", "подогрев руля", "камера заднего вида", "круиз-контроль"],
+        "owner": {
+            "name": "Татьяна Орлова",
+            "telephone": "+79264445566",
+            "email": "orlova.t@vw.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Genesis",
+        "model": "GV80",
+        "cost": 6000000,
+        "production_date": new Date("2022-04-05"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 255,
+        "equipment": ["премиум-отделка", "система шумоподавления", "эргономичные сиденья", "панорамная крыша", "камеры 360", "вентиляция"],
+        "owner": {
+            "name": "Артем Белов",
+            "telephone": "+79037776655",
+            "email": "belov.artem@gv.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Cadillac",
+        "model": "Escalade",
+        "cost": 9500000,
+        "production_date": new Date("2021-11-11"),
+        "auction_evaluation": 3.0,
+        "sanctions": true,
+        "power": 420,
+        "equipment": ["AKG-аудиосистема", "телевизоры сзади", "полный привод", "массаж сидений", "подогрев всех сидений"],
+        "owner": {
+            "name": "Евгений Тихонов",
+            "telephone": "+79165554433",
+            "email": "tihonov.e@cadillac.com"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X3",
+        "cost": 5800000,
+        "production_date": new Date("2021-06-19"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 184,
+        "equipment": ["ксеноновые фары", "парктроники", "двухзонный климат", "мультимедиа", "круиз-контроль", "камера заднего вида"],
+        "owner": {
+            "name": "Людмила Федорова",
+            "telephone": "+79267778899",
+            "email": "fedorova.lyuda@bmw.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "GLC",
+        "cost": 6300000,
+        "production_date": new Date("2020-07-07"),
+        "auction_evaluation": 3.5,
+        "sanctions": true,
+        "power": 197,
+        "equipment": ["светодиодные фары", "Apple CarPlay", "запасное колесо", "подогрев сидений"],
+        "owner": {
+            "name": "Роман Яковлев",
+            "telephone": "+79038889900",
+            "email": "yakovlev.r@merc.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "Q5",
+        "cost": 5900000,
+        "production_date": new Date("2021-08-23"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 190,
+        "equipment": ["виртуальный щиток", "аудиосистема Bang & Olufsen", "камеры кругового обзора", "панорамная крыша", "вентиляция сидений", "подогрев руля", "беспроводная зарядка"],
+        "owner": {
+            "name": "Юлия Алексеева",
+            "telephone": "+79169998877",
+            "email": "alexeeva.y@audi.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Lexus",
+        "model": "NX",
+        "cost": 5200000,
+        "production_date": new Date("2022-05-14"),
+        "auction_evaluation": 5.0,
+        "sanctions": false,
+        "power": 150,
+        "equipment": ["система безопасности", "бесключевой доступ", "подогрев сидений", "камеры 360"],
+        "owner": {
+            "name": "Галина Сидорова",
+            "telephone": "+79263334455",
+            "email": "sidorova.g@lexus.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Hyundai",
+        "model": "Palisade",
+        "cost": 4800000,
+        "production_date": new Date("2021-10-10"),
+        "auction_evaluation": 3.5,
+        "sanctions": false,
+        "power": 249,
+        "equipment": ["панорамная крыша", "камеры кругового обзора", "подогрев сидений", "вентиляция передних сидений", "круиз-контроль"],
+        "owner": {
+            "name": "Максим Ковалев",
+            "telephone": "+79161112233",
+            "email": "kovalev.m@hyundai.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Kia",
+        "model": "Telluride",
+        "cost": 5100000,
+        "production_date": new Date("2022-06-18"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 291,
+        "equipment": ["премиум-аудиосистема", "вентилируемые сиденья", "подогрев руля", "панорамная крыша", "камеры 360", "проекционный дисплей"],
+        "owner": {
+            "name": "Светлана Михайлова",
+            "telephone": "+79264447788",
+            "email": "mihailova.s@kia.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X4",
+        "cost": 6700000,
+        "production_date": new Date("2020-12-20"),
+        "auction_evaluation": 3.0,
+        "sanctions": true,
+        "power": 252,
+        "equipment": ["спортивный кузов", "ксеноновые фары", "кожаный салон", "подогрев сидений"],
+        "owner": {
+            "name": "Андрей Семенов",
+            "telephone": "+79039998877",
+            "email": "semenov.a@bmw.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mazda",
+        "model": "CX-9",
+        "cost": 4500000,
+        "production_date": new Date("2021-02-28"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 231,
+        "equipment": ["кожаный салон", "подогрев сидений", "камера заднего вида", "круиз-контроль", "панорамная крыша"],
+        "owner": {
+            "name": "Екатерина Фролова",
+            "telephone": "+79162223344",
+            "email": "frolova.e@mazda.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Jeep",
+        "model": "Grand Cherokee",
+        "cost": 7100000,
+        "production_date": new Date("2021-09-09"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 271,
+        "equipment": ["внедорожные возможности", "пневмоподвеска", "премиум-аудио", "вентиляция сидений", "подогрев руля"],
+        "owner": {
+            "name": "Василий Попов",
+            "telephone": "+79265556677",
+            "email": "popov.v@jeep.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Infiniti",
+        "model": "QX80",
+        "cost": 8300000,
+        "production_date": new Date("2020-11-05"),
+        "auction_evaluation": 3.5,
+        "sanctions": false,
+        "power": 400,
+        "equipment": ["премиум-отделка", "аудиосистема Bose", "подогрев всех сидений", "панорамная крыша", "камеры 360", "массаж сидений", "проекционный дисплей"],
+        "owner": {
+            "name": "Олег Васильев",
+            "telephone": "+79168882233",
+            "email": "vasilev.o@infiniti.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Ford",
+        "model": "Explorer",
+        "cost": 5600000,
+        "production_date": new Date("2022-03-22"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 300,
+        "equipment": ["система помощи при парковке", "подогрев сидений", "камеры кругового обзора", "круиз-контроль"],
+        "owner": {
+            "name": "Наталья Соловьева",
+            "telephone": "+79267771122",
+            "email": "solovyeva.n@ford.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X5 M",
+        "cost": 11500000,
+        "production_date": new Date("2021-12-15"),
+        "auction_evaluation": 5.0,
+        "sanctions": true,
+        "power": 625,
+        "equipment": ["спортивный пакет M", "карбоновые элементы", "спортивные сиденья", "активный дифференциал", "улучшенная тормозная система", "эксклюзивная отделка"],
+        "owner": {
+            "name": "Константин Борисов",
+            "telephone": "+79169990011",
+            "email": "borisov.k@bmw-m.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "GLE Coupe",
+        "cost": 8900000,
+        "production_date": new Date("2022-01-30"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 367,
+        "equipment": ["купеобразный кузов", "панорамная крыша", "цифровая приборная панель", "камеры 360", "вентилируемые сиденья", "подогрев руля"],
+        "owner": {
+            "name": "Ирина Зайцева",
+            "telephone": "+79261119988",
+            "email": "zaitseva.i@merc.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "e-tron",
+        "cost": 7800000,
+        "production_date": new Date("2021-11-25"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 355,
+        "equipment": ["электропривод", "виртуальные зеркала", "премиум-аудио", "панорамная крыша", "подогрев сидений", "беспроводная зарядка"],
+        "owner": {
+            "name": "Антон Павлов",
+            "telephone": "+79032224455",
+            "email": "pavlov.a@audi-e.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Lexus",
+        "model": "LX",
+        "cost": 11000000,
+        "production_date": new Date("2020-09-18"),
+        "auction_evaluation": 3.5,
+        "sanctions": true,
+        "power": 409,
+        "equipment": ["внедорожные возможности", "премиум-салон", "холодильник", "телевизоры сзади", "система марк-левinson"],
+        "owner": {
+            "name": "Денис Киселев",
+            "telephone": "+79163337799",
+            "email": "kiselev.d@lexus.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Porsche",
+        "model": "Macan",
+        "cost": 7300000,
+        "production_date": new Date("2021-05-05"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 265,
+        "equipment": ["спортивный пакет", "кожаный салон", "спортивная подвеска", "камеры кругового обзора", "панорамная крыша"],
+        "owner": {
+            "name": "Евгения Медведева",
+            "telephone": "+79268885544",
+            "email": "medvedeva.e@porsche.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Volvo",
+        "model": "XC60",
+        "cost": 5200000,
+        "production_date": new Date("2022-02-08"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 250,
+        "equipment": ["система безопасности", "подогрев сидений", "камера заднего вида", "круиз-контроль", "мультимедиа"],
+        "owner": {
+            "name": "Александр Крылов",
+            "telephone": "+79160009988",
+            "email": "krylov.a@volvo.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Tesla",
+        "model": "Model Y",
+        "cost": 6500000,
+        "production_date": new Date("2022-07-12"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 345,
+        "equipment": ["автопилот", "панорамная крыша", "премиум-аудио", "игровая система", "подогрев сидений", "беспроводная зарядка"],
+        "owner": {
+            "name": "Владимир Некрасов",
+            "telephone": "+79262220099",
+            "email": "nekrasov.v@tesla.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "iX",
+        "cost": 9800000,
+        "production_date": new Date("2022-04-20"),
+        "auction_evaluation": 5.0,
+        "sanctions": false,
+        "power": 326,
+        "equipment": ["электропривод", "панорамная крыша", "система iDrive 8", "массаж сидений", "камеры 360", "проекционный дисплей", "премиум-аудио"],
+        "owner": {
+            "name": "Павел Гусев",
+            "telephone": "+79167770022",
+            "email": "gusev.p@bmw-i.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "EQC",
+        "cost": 7600000,
+        "production_date": new Date("2021-08-30"),
+        "auction_evaluation": 3.5,
+        "sanctions": true,
+        "power": 408,
+        "equipment": ["электропривод", "панорамная крыша", "камеры 360", "премиум-аудио", "подогрев сидений"],
+        "owner": {
+            "name": "Лариса Петрова",
+            "telephone": "+79263338877",
+            "email": "petrova.l@merc-e.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "RS Q8",
+        "cost": 12500000,
+        "production_date": new Date("2021-12-10"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 600,
+        "equipment": ["спортивный пакет RS", "карбон", "спортивная выхлопная система", "керамические тормоза", "спортивные сиденья", "динамическая подвеска"],
+        "owner": {
+            "name": "Григорий Орлов",
+            "telephone": "+79164445566",
+            "email": "orlov.g@audi-rs.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Land Rover",
+        "model": "Defender",
+        "cost": 8200000,
+        "production_date": new Date("2022-03-05"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 300,
+        "equipment": ["внедорожные возможности", "пневмоподвеска", "камеры 360", "подогрев сидений", "панорамная крыша", "круиз-контроль"],
+        "owner": {
+            "name": "Станислав Титов",
+            "telephone": "+79265553344",
+            "email": "titov.s@landrover.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Toyota",
+        "model": "RAV4",
+        "cost": 3200000,
+        "production_date": new Date("2020-10-15"),
+        "auction_evaluation": 3.5,
+        "sanctions": false,
+        "power": 150,
+        "equipment": ["полный привод", "камера заднего вида", "подогрев сидений", "мультимедиа"],
+        "owner": {
+            "name": "Вера Кузнецова",
+            "telephone": "+79168886655",
+            "email": "kuznecova.v@toyota.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Honda",
+        "model": "CR-V",
+        "cost": 3500000,
+        "production_date": new Date("2021-04-12"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 190,
+        "equipment": ["полный привод", "камеры кругового обзора", "подогрев сидений", "круиз-контроль", "панорамная крыша", "беспроводная зарядка"],
+        "owner": {
+            "name": "Аркадий Савельев",
+            "telephone": "+79261117766",
+            "email": "saveliev.a@honda.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X2",
+        "cost": 4200000,
+        "production_date": new Date("2021-11-20"),
+        "auction_evaluation": 3.0,
+        "sanctions": true,
+        "power": 178,
+        "equipment": ["спортивный дизайн", "ксеноновые фары", "подогрев сидений", "камера заднего вида"],
+        "owner": {
+            "name": "Зоя Абрамова",
+            "telephone": "+79163334422",
+            "email": "abramova.z@bmw.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "GLB",
+        "cost": 4900000,
+        "production_date": new Date("2022-05-30"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 163,
+        "equipment": ["компактный кроссовер", "третий ряд сидений", "подогрев сидений", "камеры 360", "панорамная крыша"],
+        "owner": {
+            "name": "Тимур Филиппов",
+            "telephone": "+79264448899",
+            "email": "filipov.t@merc.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "Q3",
+        "cost": 4100000,
+        "production_date": new Date("2020-12-28"),
+        "auction_evaluation": 3.5,
+        "sanctions": true,
+        "power": 150,
+        "equipment": ["виртуальная приборная панель", "подогрев сидений", "камера заднего вида", "круиз-контроль", "светодиодные фары"],
+        "owner": {
+            "name": "Ксения Макарова",
+            "telephone": "+79167772211",
+            "email": "makarova.k@audi.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Lexus",
+        "model": "UX",
+        "cost": 3800000,
+        "production_date": new Date("2021-07-14"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 150,
+        "equipment": ["гибридная установка", "премиум-отделка", "подогрев сидений", "камеры кругового обзора", "панорамная крыша", "беспроводная зарядка"],
+        "owner": {
+            "name": "Валентина Егорова",
+            "telephone": "+79260004433",
+            "email": "egorova.v@lexus.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Volvo",
+        "model": "XC40",
+        "cost": 3900000,
+        "production_date": new Date("2022-01-25"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 190,
+        "equipment": ["компактный кроссовер", "система безопасности", "подогрев сидений", "панорамная крыша", "камеры 360"],
+        "owner": {
+            "name": "Михаил Данилов",
+            "telephone": "+79161113344",
+            "email": "danilov.m@volvo.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X1",
+        "cost": 3700000,
+        "production_date": new Date("2021-03-08"),
+        "auction_evaluation": 3.0,
+        "sanctions": true,
+        "power": 140,
+        "equipment": ["передний привод", "подогрев сидений", "мультимедиа", "камера заднего вида"],
+        "owner": {
+            "name": "Надежда Воробьева",
+            "telephone": "+79263339900",
+            "email": "vorobeva.n@bmw.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "GLA",
+        "cost": 4300000,
+        "production_date": new Date("2022-06-22"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 163,
+        "equipment": ["компактный кроссовер", "панорамная крыша", "подогрев сидений", "камеры 360", "круиз-контроль", "беспроводная зарядка"],
+        "owner": {
+            "name": "Руслан Степанов",
+            "telephone": "+79168880011",
+            "email": "stepanov.r@merc.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "Q2",
+        "cost": 2900000,
+        "production_date": new Date("2020-11-30"),
+        "auction_evaluation": 3.5,
+        "sanctions": false,
+        "power": 150,
+        "equipment": ["компактный размер", "светодиодные фары", "подогрев сидений", "мультимедиа"],
+        "owner": {
+            "name": "Алла Комарова",
+            "telephone": "+79261110022",
+            "email": "komarova.a@audi.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "MINI",
+        "model": "Countryman",
+        "cost": 3400000,
+        "production_date": new Date("2021-09-25"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 192,
+        "equipment": ["уникальный дизайн", "панорамная крыша", "подогрев сидений", "камеры кругового обзора", "премиум-аудио", "проекционный дисплей"],
+        "owner": {
+            "name": "Эдуард Морозов",
+            "telephone": "+79163336677",
+            "email": "morozov.e@mini.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Jaguar",
+        "model": "F-Pace",
+        "cost": 7100000,
+        "production_date": new Date("2021-12-28"),
+        "auction_evaluation": 4.0,
+        "sanctions": true,
+        "power": 250,
+        "equipment": ["спортивный дизайн", "кожаный салон", "подогрев сидений", "панорамная крыша", "камеры 360", "круиз-контроль"],
+        "owner": {
+            "name": "Геннадий Блинов",
+            "telephone": "+79265551122",
+            "email": "blinov.g@jaguar.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X5 xDrive45e",
+        "cost": 8200000,
+        "production_date": new Date("2022-02-18"),
+        "auction_evaluation": 5.0,
+        "sanctions": false,
+        "power": 394,
+        "equipment": ["подключаемый гибрид", "панорамная крыша", "проекционный дисплей", "камеры 360", "вентилируемые сиденья", "массаж сидений", "премиум-аудио"],
+        "owner": {
+            "name": "Вячеслав Калинин",
+            "telephone": "+79167773344",
+            "email": "kalinin.v@bmw-phev.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "GLE 53 AMG",
+        "cost": 10500000,
+        "production_date": new Date("2021-10-05"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 435,
+        "equipment": ["AMG пакет", "спортивная выхлопная система", "спортивные сиденья", "камеры 360", "панорамная крыша", "массаж сидений"],
+        "owner": {
+            "name": "Борис Ефимов",
+            "telephone": "+79262228899",
+            "email": "efimov.b@amg.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "SQ7",
+        "cost": 9800000,
+        "production_date": new Date("2020-12-12"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 435,
+        "equipment": ["спортивный пакет S", "спортивная подвеска", "кожаный салон", "камеры 360", "вентилируемые сиденья", "подогрев руля"],
+        "owner": {
+            "name": "Маргарита Сазонова",
+            "telephone": "+79169992233",
+            "email": "sazonova.m@audi-s.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Porsche",
+        "model": "Panamera",
+        "cost": 9200000,
+        "production_date": new Date("2021-06-30"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 330,
+        "equipment": ["спортивный седан", "кожаный салон", "спортивная подвеска", "панорамная крыша", "премиум-аудио", "вентилируемые сиденья"],
+        "owner": {
+            "name": "Леонид Тарасов",
+            "telephone": "+79263332200",
+            "email": "tarasov.l@porsche.ru"
+        }
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X5",
+        "cost": 7200000,
+        "production_date": new Date("2021-06-15"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 265,
+        "equipment": ["панорамная крыша", "проекционный дисплей", "камеры 360", "круиз-контроль", "подогрев сидений"],
+        "owner": "Автодом BMW"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "GLE",
+        "cost": 7800000,
+        "production_date": new Date("2022-03-22"),
+        "auction_evaluation": 5.0,
+        "sanctions": true,
+        "power": 320,
+        "equipment": ["панорамная крыша", "вентиляция сидений", "камеры 360", "премиум-аудио", "подогрев руля", "беспроводная зарядка"],
+        "owner": "Mercedes-Benz Центр Юг"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "Q7",
+        "cost": 6800000,
+        "production_date": new Date("2020-11-05"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 249,
+        "equipment": ["виртуальная приборная панель", "матричные фары", "камеры 360"],
+        "owner": "Ауди Центр Таганка"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Lexus",
+        "model": "RX",
+        "cost": 6300000,
+        "production_date": new Date("2021-12-12"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 235,
+        "equipment": ["панорамная крыша", "премиум-аудио", "камеры 360", "вентиляция сидений", "подогрев задних сидений"],
+        "owner": "Lexus – АвтоСпецЦентр"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Porsche",
+        "model": "Cayenne",
+        "cost": 8900000,
+        "production_date": new Date("2022-07-08"),
+        "auction_evaluation": 5.0,
+        "sanctions": true,
+        "power": 340,
+        "equipment": ["спортивный пакет", "кожаный салон", "пневмоподвеска", "камеры 360", "премиум-аудио", "адаптивный круиз-контроль"],
+        "owner": "Porsche Центр Новосибирск"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Land Rover",
+        "model": "Range Rover Sport",
+        "cost": 9200000,
+        "production_date": new Date("2020-09-19"),
+        "auction_evaluation": 3.5,
+        "sanctions": false,
+        "power": 300,
+        "equipment": ["пневмоподвеска", "камеры 360", "термостекла", "внедорожные режимы"],
+        "owner": "Land Rover – Рольф"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Toyota",
+        "model": "Land Cruiser 300",
+        "cost": 8300000,
+        "production_date": new Date("2022-02-14"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 310,
+        "equipment": ["блокировки дифференциалов", "холодильник", "камеры 360", "панорамная крыша", "подогрев сидений"],
+        "owner": "Тойота Центр Екатеринбург"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Volvo",
+        "model": "XC90",
+        "cost": 5900000,
+        "production_date": new Date("2021-04-30"),
+        "auction_evaluation": 3.0,
+        "sanctions": true,
+        "power": 250,
+        "equipment": ["система безопасности", "подогрев сидений", "камера заднего вида"],
+        "owner": "Volvo Карс Самара"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Hyundai",
+        "model": "Palisade",
+        "cost": 4900000,
+        "production_date": new Date("2022-06-21"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 249,
+        "equipment": ["панорамная крыша", "камеры 360", "вентиляция сидений", "подогрев руля", "беспроводная зарядка"],
+        "owner": "Hyundai – Автомир"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Kia",
+        "model": "Telluride",
+        "cost": 5100000,
+        "production_date": new Date("2021-08-11"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 291,
+        "equipment": ["премиум-аудио", "вентиляция сидений", "панорамная крыша", "камеры 360", "проекционный дисплей"],
+        "owner": "Kia Центр Краснодар"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X7",
+        "cost": 10100000,
+        "production_date": new Date("2022-09-05"),
+        "auction_evaluation": 5.0,
+        "sanctions": false,
+        "power": 340,
+        "equipment": ["массаж сидений", "система Gesture Control", "панорамная крыша", "камеры 360", "премиум-аудио", "подогрев всех сидений", "проекционный дисплей"],
+        "owner": "Автодом BMW"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "GLS",
+        "cost": 10800000,
+        "production_date": new Date("2021-12-20"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 330,
+        "equipment": ["E-Active Body Control", "сиденья бизнес-класса", "два 12.3-дюймовых экрана", "камеры 360", "премиум-аудио"],
+        "owner": "Mercedes-Benz Центр Юг"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "Q8",
+        "cost": 7900000,
+        "production_date": new Date("2020-10-30"),
+        "auction_evaluation": 3.5,
+        "sanctions": false,
+        "power": 340,
+        "equipment": ["OLED-фары", "безрамочные двери", "премиум-звук", "панорамная крыша"],
+        "owner": "Ауди Центр Таганка"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Lexus",
+        "model": "LX",
+        "cost": 11500000,
+        "production_date": new Date("2022-04-18"),
+        "auction_evaluation": 4.0,
+        "sanctions": true,
+        "power": 409,
+        "equipment": ["холодильник", "телевизоры сзади", "марк-левинсон", "камеры 360", "панорамная крыша"],
+        "owner": "Lexus – АвтоСпецЦентр"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Porsche",
+        "model": "Macan",
+        "cost": 6800000,
+        "production_date": new Date("2021-03-15"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 265,
+        "equipment": ["спортивный пакет", "кожаный салон", "камеры 360", "панорамная крыша", "подогрев руля"],
+        "owner": "Porsche Центр Новосибирск"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Land Rover",
+        "model": "Defender",
+        "cost": 8100000,
+        "production_date": new Date("2022-01-27"),
+        "auction_evaluation": 4.0,
+        "sanctions": true,
+        "power": 300,
+        "equipment": ["внедорожные режимы", "пневмоподвеска", "камеры 360", "подогрев сидений", "панорамная крыша"],
+        "owner": "Land Rover – Рольф"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Toyota",
+        "model": "Highlander",
+        "cost": 5400000,
+        "production_date": new Date("2020-12-03"),
+        "auction_evaluation": 3.5,
+        "sanctions": false,
+        "power": 249,
+        "equipment": ["полный привод", "подогрев сидений", "камера заднего вида", "круиз-контроль"],
+        "owner": "Тойота Центр Екатеринбург"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Volvo",
+        "model": "XC60",
+        "cost": 4800000,
+        "production_date": new Date("2022-07-29"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 250,
+        "equipment": ["система безопасности", "панорамная крыша", "камеры 360", "подогрев сидений", "премиум-аудио"],
+        "owner": "Volvo Карс Самара"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Hyundai",
+        "model": "Santa Fe",
+        "cost": 4100000,
+        "production_date": new Date("2021-09-09"),
+        "auction_evaluation": 4.0,
+        "sanctions": true,
+        "power": 200,
+        "equipment": ["панорамная крыша", "подогрев сидений", "камеры 360", "круиз-контроль"],
+        "owner": "Hyundai – Автомир"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Kia",
+        "model": "Sorento",
+        "cost": 4300000,
+        "production_date": new Date("2022-05-13"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 249,
+        "equipment": ["панорамная крыша", "вентиляция сидений", "камеры 360", "подогрев руля", "премиум-аудио"],
+        "owner": "Kia Центр Краснодар"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X3",
+        "cost": 5500000,
+        "production_date": new Date("2021-11-17"),
+        "auction_evaluation": 3.0,
+        "sanctions": false,
+        "power": 184,
+        "equipment": ["ксеноновые фары", "парктроники", "двухзонный климат"],
+        "owner": "Автодом BMW"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "GLC",
+        "cost": 6100000,
+        "production_date": new Date("2020-08-22"),
+        "auction_evaluation": 3.5,
+        "sanctions": true,
+        "power": 197,
+        "equipment": ["светодиодные фары", "Apple CarPlay", "подогрев сидений", "камера заднего вида"],
+        "owner": "Mercedes-Benz Центр Юг"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "Q5",
+        "cost": 5700000,
+        "production_date": new Date("2022-02-01"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 190,
+        "equipment": ["виртуальный щиток", "камеры 360", "панорамная крыша", "подогрев сидений", "премиум-аудио"],
+        "owner": "Ауди Центр Таганка"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Lexus",
+        "model": "NX",
+        "cost": 5000000,
+        "production_date": new Date("2021-07-14"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 150,
+        "equipment": ["система безопасности", "бесключевой доступ", "подогрев сидений", "камеры 360"],
+        "owner": "Lexus – АвтоСпецЦентр"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Porsche",
+        "model": "Taycan",
+        "cost": 12500000,
+        "production_date": new Date("2022-12-12"),
+        "auction_evaluation": 5.0,
+        "sanctions": true,
+        "power": 476,
+        "equipment": ["электропривод", "панорамная крыша", "спортивный пакет", "премиум-аудио", "камеры 360", "адаптивная подвеска"],
+        "owner": "Porsche Центр Новосибирск"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Land Rover",
+        "model": "Discovery",
+        "cost": 6900000,
+        "production_date": new Date("2020-10-08"),
+        "auction_evaluation": 3.0,
+        "sanctions": false,
+        "power": 300,
+        "equipment": ["система Terrain Response", "пневмоподвеска", "камеры 360", "подогрев сидений"],
+        "owner": "Land Rover – Рольф"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Toyota",
+        "model": "RAV4",
+        "cost": 3300000,
+        "production_date": new Date("2022-04-25"),
+        "auction_evaluation": 4.0,
+        "sanctions": true,
+        "power": 150,
+        "equipment": ["полный привод", "камера заднего вида", "подогрев сидений", "круиз-контроль", "мультимедиа"],
+        "owner": "Тойота Центр Екатеринбург"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Volvo",
+        "model": "S90",
+        "cost": 5700000,
+        "production_date": new Date("2021-03-03"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 250,
+        "equipment": ["панорамная крыша", "подогрев руля", "вентиляция сидений", "Bowers & Wilkins", "камеры 360"],
+        "owner": "Volvo Карс Самара"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Hyundai",
+        "model": "Tucson",
+        "cost": 2900000,
+        "production_date": new Date("2022-08-18"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 150,
+        "equipment": ["панорамная крыша", "подогрев сидений", "камера заднего вида", "круиз-контроль"],
+        "owner": "Hyundai – Автомир"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Kia",
+        "model": "Sportage",
+        "cost": 3100000,
+        "production_date": new Date("2021-12-01"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 180,
+        "equipment": ["панорамная крыша", "подогрев сидений", "камеры 360", "беспроводная зарядка"],
+        "owner": "Kia Центр Краснодар"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "X6",
+        "cost": 8200000,
+        "production_date": new Date("2022-05-19"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 265,
+        "equipment": ["спойлер", "спортивная подвеска", "M-пакет", "панорамная крыша", "камеры 360", "премиум-аудио"],
+        "owner": "Автодом BMW"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "E-Class",
+        "cost": 6900000,
+        "production_date": new Date("2021-09-27"),
+        "auction_evaluation": 4.0,
+        "sanctions": true,
+        "power": 249,
+        "equipment": ["двойной экран", "панорамная крыша", "камеры 360", "подогрев сидений", "беспроводная зарядка"],
+        "owner": "Mercedes-Benz Центр Юг"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "A8",
+        "cost": 9500000,
+        "production_date": new Date("2020-12-10"),
+        "auction_evaluation": 3.5,
+        "sanctions": false,
+        "power": 340,
+        "equipment": ["четырехзонный климат", "массаж сидений", "Bang & Olufsen", "камеры 360", "подогрев руля"],
+        "owner": "Ауди Центр Таганка"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Lexus",
+        "model": "ES",
+        "cost": 4700000,
+        "production_date": new Date("2022-01-20"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 200,
+        "equipment": ["кожаный салон", "подогрев и вентиляция", "марк-левинсон", "панорамная крыша", "камеры 360"],
+        "owner": "Lexus – АвтоСпецЦентр"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Porsche",
+        "model": "Panamera",
+        "cost": 9900000,
+        "production_date": new Date("2021-06-06"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 330,
+        "equipment": ["спортивный седан", "кожаный салон", "панорамная крыша", "премиум-аудио", "вентиляция сидений"],
+        "owner": "Porsche Центр Новосибирск"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Land Rover",
+        "model": "Range Rover Velar",
+        "cost": 7400000,
+        "production_date": new Date("2022-03-11"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 250,
+        "equipment": ["сенсорные экраны", "панорамная крыша", "пневмоподвеска", "камеры 360", "подогрев сидений"],
+        "owner": "Land Rover – Рольф"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Toyota",
+        "model": "Camry",
+        "cost": 2900000,
+        "production_date": new Date("2021-10-10"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 181,
+        "equipment": ["подогрев сидений", "мультимедиа", "камера заднего вида", "круиз-контроль"],
+        "owner": "Тойота Центр Екатеринбург"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Volvo",
+        "model": "XC40",
+        "cost": 3700000,
+        "production_date": new Date("2022-11-22"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 190,
+        "equipment": ["система безопасности", "панорамная крыша", "подогрев сидений", "камеры 360", "премиум-аудио"],
+        "owner": "Volvo Карс Самара"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Hyundai",
+        "model": "Creta",
+        "cost": 2400000,
+        "production_date": new Date("2020-07-07"),
+        "auction_evaluation": 3.5,
+        "sanctions": false,
+        "power": 150,
+        "equipment": ["подогрев сидений", "камера заднего вида", "круиз-контроль"],
+        "owner": "Hyundai – Автомир"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Kia",
+        "model": "Rio",
+        "cost": 1700000,
+        "production_date": new Date("2021-05-05"),
+        "auction_evaluation": 3.0,
+        "sanctions": true,
+        "power": 123,
+        "equipment": ["подогрев сидений", "мультимедиа", "камера заднего вида"],
+        "owner": "Kia Центр Краснодар"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "BMW",
+        "model": "M5",
+        "cost": 12000000,
+        "production_date": new Date("2022-08-08"),
+        "auction_evaluation": 5.0,
+        "sanctions": false,
+        "power": 625,
+        "equipment": ["спортивные сиденья M", "карбоновые тормоза", "активный M-дифференциал", "спортивная выхлопная система", "панорамная крыша", "премиум-аудио"],
+        "owner": "Автодом BMW"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mercedes-Benz",
+        "model": "S-Class",
+        "cost": 13000000,
+        "production_date": new Date("2022-09-09"),
+        "auction_evaluation": 5.0,
+        "sanctions": true,
+        "power": 435,
+        "equipment": ["Executive-пакет", "ароматизация", "массаж сидений", "Pre-Safe", "камеры 360", "панорамная крыша", "премиум-аудио"],
+        "owner": "Mercedes-Benz Центр Юг"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Audi",
+        "model": "RS7",
+        "cost": 11500000,
+        "production_date": new Date("2021-11-11"),
+        "auction_evaluation": 5.0,
+        "sanctions": false,
+        "power": 600,
+        "equipment": ["спортивный пакет RS", "карбон", "керамические тормоза", "спортивная выхлопная", "панорамная крыша", "премиум-аудио"],
+        "owner": "Ауди Центр Таганка"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Lexus",
+        "model": "LC500",
+        "cost": 10200000,
+        "production_date": new Date("2020-12-24"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 477,
+        "equipment": ["спортивный дизайн", "премиум-аудио", "кожаный салон", "камеры 360", "панорамная крыша"],
+        "owner": "Lexus – АвтоСпецЦентр"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Porsche",
+        "model": "911 Turbo S",
+        "cost": 18500000,
+        "production_date": new Date("2022-10-10"),
+        "auction_evaluation": 5.0,
+        "sanctions": false,
+        "power": 650,
+        "equipment": ["спортивный пакет", "керамические тормоза", "аэродинамика", "премиум-аудио", "панорамная крыша"],
+        "owner": "Porsche Центр Новосибирск"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Land Rover",
+        "model": "Range Rover",
+        "cost": 11800000,
+        "production_date": new Date("2023-01-15"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 400,
+        "equipment": ["пневмоподвеска", "камеры 360", "панорамная крыша", "массаж сидений", "премиум-аудио", "холодильник"],
+        "owner": "Land Rover – Рольф"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Toyota",
+        "model": "Supra",
+        "cost": 7200000,
+        "production_date": new Date("2021-04-04"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 340,
+        "equipment": ["спортивный пакет", "кожаный салон", "камеры 360", "премиум-аудио", "подогрев сидений"],
+        "owner": "Тойота Центр Екатеринбург"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Volvo",
+        "model": "V90 Cross Country",
+        "cost": 6200000,
+        "production_date": new Date("2022-02-22"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 250,
+        "equipment": ["универсал", "пневмоподвеска", "подогрев сидений", "панорамная крыша", "камеры 360", "Bowers & Wilkins"],
+        "owner": "Volvo Карс Самара"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Hyundai",
+        "model": "Sonata",
+        "cost": 2500000,
+        "production_date": new Date("2021-07-19"),
+        "auction_evaluation": 4.0,
+        "sanctions": true,
+        "power": 150,
+        "equipment": ["панорамная крыша", "подогрев сидений", "камера заднего вида", "круиз-контроль"],
+        "owner": "Hyundai – Автомир"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Kia",
+        "model": "K5",
+        "cost": 2700000,
+        "production_date": new Date("2022-03-03"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 180,
+        "equipment": ["панорамная крыша", "подогрев сидений", "камеры 360", "вентиляция сидений", "беспроводная зарядка"],
+        "owner": "Kia Центр Краснодар"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Tesla",
+        "model": "Model Y",
+        "cost": 6700000,
+        "production_date": new Date("2022-06-06"),
+        "auction_evaluation": 4.5,
+        "sanctions": true,
+        "power": 345,
+        "equipment": ["автопилот", "панорамная крыша", "премиум-аудио", "подогрев сидений"],
+        "owner": "Porsche Центр Новосибирск"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Genesis",
+        "model": "GV80",
+        "cost": 6100000,
+        "production_date": new Date("2021-12-12"),
+        "auction_evaluation": 4.5,
+        "sanctions": false,
+        "power": 255,
+        "equipment": ["премиум-отделка", "система шумоподавления", "эргономичные сиденья", "панорамная крыша", "камеры 360"],
+        "owner": "Lexus – АвтоСпецЦентр"
+    },
+    {
+        "_id": ObjectId(),
+        "brand": "Mazda",
+        "model": "CX-9",
+        "cost": 4300000,
+        "production_date": new Date("2021-09-09"),
+        "auction_evaluation": 4.0,
+        "sanctions": false,
+        "power": 231,
+        "equipment": ["кожаный салон", "подогрев сидений", "камера заднего вида", "круиз-контроль", "панорамная крыша"],
+        "owner": "Тойота Центр Екатеринбург"
+    }
+]
