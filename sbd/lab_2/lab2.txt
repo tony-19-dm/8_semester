@@ -181,3 +181,18 @@ db.avgAuction.find().forEach(function(avg) {
     }
   }
 ]
+
+5. Защита
+посчитать для каждого бренда, количество автомобилей у которых мощьность > 250  
+[
+  {
+    $group: {
+      _id: "$brand",
+      countPower: {
+        $sum: {
+          $cond: [ { $gt: ["$power", 250] }, 1, 0 ]
+        }
+      }
+    }
+  }
+]
