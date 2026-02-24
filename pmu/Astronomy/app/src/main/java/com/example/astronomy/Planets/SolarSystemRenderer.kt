@@ -5,6 +5,7 @@ import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
 import com.example.astronomy.opengl.ShaderHelper
+import com.example.astronomy.opengl.Square
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
@@ -61,8 +62,6 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
     }
 
     private fun initPlanets() {
-        // Масштаб: 1 единица = 1 миллион миль (примерно) [citation:7]
-        // Радиус Солнца: 0.4, Земли: 0.04 (увеличено для видимости)
 
         sun = Planet(0.4f, 48, 48, floatArrayOf(1.0f, 0.8f, 0.3f, 1.0f)) // Желтый
 
@@ -73,9 +72,9 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
 
         moon = Planet(0.01f, 16, 16, floatArrayOf(0.8f, 0.8f, 0.8f, 1.0f)) // Серый
         moon.orbitRadius = 0.2f
-        moon.orbitSpeed = 40f       // быстрее Земли
-        moon.rotationSpeed = 40f
-        moon.isMoon = true          // специальный режим для Луны
+        moon.orbitSpeed = 40f
+        moon.rotationSpeed = 0f
+        moon.isMoon = true          // режим Луны
 
         mars = Planet(0.03f, 32, 32, floatArrayOf(0.9f, 0.4f, 0.2f, 1.0f)) // Красный
         mars.orbitRadius = 2.0f
@@ -103,9 +102,9 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
 
         // Видовая матрица (камера)
         Matrix.setLookAtM(viewMatrix, 0,
-            0f, 3f, 8f,   // позиция камеры (смещена вверх для обзора)
-            0f, 0f, 0f,   // точка взгляда
-            0f, 1f, 0f)   // up-вектор
+            0f, 3f, 8f,
+            0f, 0f, 0f,
+            0f, 1f, 0f)
     }
 
     override fun onDrawFrame(gl: GL10?) {
@@ -122,7 +121,7 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         // Устанавливаем позицию света (Солнце в центре)
         GLES20.glUniform3f(lightPositionHandle, lightPosition[0], lightPosition[1], lightPosition[2])
 
-        // Рисуем Солнце (неподвижно в центре)
+        // Рисуем Солнце
         drawPlanet(sun, FloatArray(16).also { Matrix.setIdentityM(it, 0) })
 
         // Рисуем Венеру

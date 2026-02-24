@@ -17,6 +17,26 @@ object ShaderHelper {
         }
     """.trimIndent()
 
+    private val bgVertexShaderCode = """
+        attribute vec4 aPosition;
+        attribute vec2 aTexCoord;
+        varying vec2 vTexCoord;
+        uniform mat4 uMVPMatrix;
+        void main() {
+            gl_Position = uMVPMatrix * aPosition;
+            vTexCoord = aTexCoord;
+        }
+    """.trimIndent()
+
+        private val bgFragmentShaderCode = """
+        precision mediump float;
+        varying vec2 vTexCoord;
+        uniform sampler2D uTexture;
+        void main() {
+            gl_FragColor = texture2D(uTexture, vTexCoord);
+        }
+    """.trimIndent()
+
     // Фрагментный шейдер с моделью Фонга
     val fragmentShaderCode = """
         precision mediump float;

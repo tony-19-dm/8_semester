@@ -1,6 +1,7 @@
 package com.example.astronomy.Planets
 
 import android.opengl.GLES20
+import android.opengl.Matrix
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -12,7 +13,7 @@ class Planet(
     private val radius: Float,
     private val stacks: Int = 48,
     private val slices: Int = 48,
-    private val color: FloatArray = floatArrayOf(1f, 1f, 1f, 1f) // RGBA по умолчанию
+    private val color: FloatArray = floatArrayOf(1f, 1f, 1f, 1f)
 ) {
     private var vertexBuffer: FloatBuffer
     private var normalBuffer: FloatBuffer
@@ -20,13 +21,13 @@ class Planet(
     private val indexCount: Int
 
     // Параметры движения
-    var orbitRadius: Float = 0f        // радиус орбиты
-    var orbitSpeed: Float = 0f         // скорость орбитального вращения
-    var rotationSpeed: Float = 0f      // скорость вращения вокруг оси
-    var orbitAngle: Float = 0f         // текущий угол на орбите
-    var rotationAngle: Float = 0f      // текущий угол поворота вокруг оси
+    var orbitRadius: Float = 0f
+    var orbitSpeed: Float = 0f
+    var rotationSpeed: Float = 0f
+    var orbitAngle: Float = 0f
+    var rotationAngle: Float = 0f
 
-    // Специальный режим для Луны (вращение перпендикулярно эклиптике)
+    // Специальный режим для Луны
     var isMoon: Boolean = false
     var moonOrbitAngle: Float = 0f      // угол для перпендикулярного вращения
 
@@ -146,27 +147,38 @@ class Planet(
     }
 
     // Получение матрицы модели для планеты
-    fun getModelMatrix(parentMatrix: FloatArray = FloatArray(16).also { android.opengl.Matrix.setIdentityM(it, 0) }): FloatArray {
-        val modelMatrix = FloatArray(16)
-        android.opengl.Matrix.setIdentityM(modelMatrix, 0)
-
-        // Применяем родительскую матрицу (например, для Луны - матрицу Земли)
-        android.opengl.Matrix.multiplyMM(modelMatrix, 0, parentMatrix, 0, modelMatrix, 0)
-
-        if (isMoon) {
-            // Для Луны: перпендикулярное вращение вокруг оси X
-            android.opengl.Matrix.rotateM(modelMatrix, 0, moonOrbitAngle, 1f, 0f, 0f) // Вращение перпендикулярно эклиптике
-            android.opengl.Matrix.translateM(modelMatrix, 0, orbitRadius, 0f, 0f)
+    fun getModelMatrix(parentMatrix: FloatArray = FloatArray(16).also { Matrix.setIdentityM(it, 0) }): FloatArray {
+        if (!isMoon) {
+            // Обычные планеты:
+            val modelMatrix = FloatArray(16)
+            Matrix.setIdentityM(modelMatrix, 0)
+            Matrix.multiplyMM(modelMatrix, 0, parentMatrix, 0, modelMatrix, 0)
+            Matrix.rotateM(modelMatrix, 0, orbitAngle, 0f, 1f, 0f)
+            Matrix.translateM(modelMatrix, 0, orbitRadius, 0f, 0f)
+            Matrix.rotateM(modelMatrix, 0, rotationAngle, 0f, 1f, 0f)
+            return modelMatrix
         } else {
-            // Для планет: вращение в плоскости эклиптики (вокруг Y)
-            android.opengl.Matrix.rotateM(modelMatrix, 0, orbitAngle, 0f, 1f, 0f)
-            android.opengl.Matrix.translateM(modelMatrix, 0, orbitRadius, 0f, 0f)
+            // Луна:
+            // 1. Получаем позицию Земли
+            val earthPos = FloatArray(3)
+            earthPos[0] = parentMatrix[12]
+            earthPos[1] = parentMatrix[13]
+            earthPos[2] = parentMatrix[14]
+
+            // 2. Вычисляем смещение Луны в мировых координатах
+            val moonOffsetX = 0f
+            val moonOffsetY = orbitRadius * kotlin.math.cos(Math.toRadians(moonOrbitAngle.toDouble())).toFloat()
+            val moonOffsetZ = orbitRadius * kotlin.math.sin(Math.toRadians(moonOrbitAngle.toDouble())).toFloat()
+
+            // 3. Перенос в позицию Земли, добавляем смещение
+            val modelMatrix = FloatArray(16)
+            Matrix.setIdentityM(modelMatrix, 0)
+            Matrix.translateM(modelMatrix, 0, earthPos[0] + moonOffsetX, earthPos[1] + moonOffsetY, earthPos[2] + moonOffsetZ)
+
+            // 4. Добавляем собственное вращение
+            Matrix.rotateM(modelMatrix, 0, rotationAngle, 0f, 1f, 0f)
+            return modelMatrix
         }
-
-        // Собственное вращение планеты вокруг оси
-        android.opengl.Matrix.rotateM(modelMatrix, 0, rotationAngle, 0f, 1f, 0f)
-
-        return modelMatrix
     }
 
     // Отрисовка планеты
@@ -176,18 +188,15 @@ class Planet(
         GLES20.glEnableVertexAttribArray(positionHandle)
         GLES20.glVertexAttribPointer(positionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer)
 
-        // Нормали (для освещения)
+        // Нормали
         normalBuffer.position(0)
         GLES20.glEnableVertexAttribArray(normalHandle)
         GLES20.glVertexAttribPointer(normalHandle, 3, GLES20.GL_FLOAT, false, 0, normalBuffer)
 
-        // Цвет
         GLES20.glUniform4fv(colorUniformHandle, 1, color, 0)
 
-        // Отрисовка
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, indexCount, GLES20.GL_UNSIGNED_SHORT, indexBuffer)
 
-        // Отключение атрибутов
         GLES20.glDisableVertexAttribArray(positionHandle)
         GLES20.glDisableVertexAttribArray(normalHandle)
     }
