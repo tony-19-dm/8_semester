@@ -4,12 +4,20 @@ import android.content.Context
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
+import com.example.astronomy.R
 import com.example.astronomy.opengl.ShaderHelper
 import com.example.astronomy.opengl.Square
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
 class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer {
+
+    private lateinit var backgroundSquare: Square
+    private var backgroundTextureId = 0
+    private var backgroundProgram = 0
+    private var bgPositionHandle = 0
+    private var bgTexCoordHandle = 0
+    private var bgMVPMatrixHandle = 0
 
     // Планеты
     private lateinit var sun: Planet
@@ -50,6 +58,16 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         program = createProgram()
         GLES20.glUseProgram(program)
 
+        backgroundSquare = Square()
+        backgroundTextureId = loadTexture(R.drawable.galaxy)
+
+        // Создаём программу для фона
+        backgroundProgram = createBackgroundProgram()
+
+        bgPositionHandle = GLES20.glGetAttribLocation(backgroundProgram, "aPosition")
+        bgTexCoordHandle = GLES20.glGetAttribLocation(backgroundProgram, "aTexCoord")
+        bgMVPMatrixHandle = GLES20.glGetUniformLocation(backgroundProgram, "uMVPMatrix")
+
         // Получаем хендлы
         positionHandle = GLES20.glGetAttribLocation(program, "aPosition")
         normalHandle = GLES20.glGetAttribLocation(program, "aNormal")
@@ -62,6 +80,87 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
 
         // Инициализируем планеты
         initPlanets()
+    }
+
+    private fun createBackgroundProgram(): Int {
+        val vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, ShaderHelper.bgVertexShaderCode)
+        val fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderHelper.bgFragmentShaderCode)
+        val program = GLES20.glCreateProgram()
+        GLES20.glAttachShader(program, vertexShader)
+        GLES20.glAttachShader(program, fragmentShader)
+        GLES20.glLinkProgram(program)
+        return program
+    }
+
+    private fun loadTexture(resourceId: Int): Int {
+        val textureIds = IntArray(1)
+        GLES20.glGenTextures(1, textureIds, 0)
+
+        val options = android.graphics.BitmapFactory.Options()
+        options.inScaled = false
+        val bitmap = android.graphics.BitmapFactory.decodeResource(context.resources, resourceId, options)
+
+        if (bitmap == null) {
+            android.util.Log.e("SolarSystemRenderer", "Failed to load texture: resourceId=$resourceId")
+            return 0
+        }
+        android.util.Log.d("SolarSystemRenderer", "Texture loaded: ${bitmap.width}x${bitmap.height}, id=${textureIds[0]}")
+
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureIds[0])
+
+        // Настройки текстуры
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR)
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR)
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE)
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE)
+
+        android.opengl.GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0)
+        bitmap.recycle()
+
+        return textureIds[0]
+    }
+
+    private fun drawBackground() {
+        // Используем программу для фона
+        GLES20.glUseProgram(backgroundProgram)
+
+        // Матрица для фона: отодвинуть назад и увеличить
+        val bgModelMatrix = FloatArray(16)
+        android.opengl.Matrix.setIdentityM(bgModelMatrix, 0)
+        android.opengl.Matrix.translateM(bgModelMatrix, 0, 0f, -2f, -10f)  // далеко назад
+        android.opengl.Matrix.scaleM(bgModelMatrix, 0, 12f, 12f, 1f)      // растянуть
+
+        // MVP матрица
+        val mvpTemp = FloatArray(16)
+        android.opengl.Matrix.multiplyMM(mvpTemp, 0, viewMatrix, 0, bgModelMatrix, 0)
+        android.opengl.Matrix.multiplyMM(mvpTemp, 0, projectionMatrix, 0, mvpTemp, 0)
+        GLES20.glUniformMatrix4fv(bgMVPMatrixHandle, 1, false, mvpTemp, 0)
+
+        // Текстура
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, backgroundTextureId)
+        val textureHandle = GLES20.glGetUniformLocation(backgroundProgram, "uTexture")
+        GLES20.glUniform1i(textureHandle, 0)
+
+        // Вершинный буфер (позиция)
+        backgroundSquare.vertexBuffer.position(0)
+        GLES20.glEnableVertexAttribArray(bgPositionHandle)
+        GLES20.glVertexAttribPointer(bgPositionHandle, 3, GLES20.GL_FLOAT, false, 5 * 4, backgroundSquare.vertexBuffer)
+
+        // Текстурные координаты
+        backgroundSquare.vertexBuffer.position(3)
+        GLES20.glEnableVertexAttribArray(bgTexCoordHandle)
+        GLES20.glVertexAttribPointer(bgTexCoordHandle, 2, GLES20.GL_FLOAT, false, 5 * 4, backgroundSquare.vertexBuffer)
+
+        // Рисуем
+        GLES20.glDrawElements(GLES20.GL_TRIANGLES, backgroundSquare.indexBuffer.capacity(), GLES20.GL_UNSIGNED_SHORT, backgroundSquare.indexBuffer)
+
+        // Отключаем атрибуты
+        GLES20.glDisableVertexAttribArray(bgPositionHandle)
+        GLES20.glDisableVertexAttribArray(bgTexCoordHandle)
+
+        // Возвращаем программу планет
+        GLES20.glUseProgram(program)
     }
 
     private fun initPlanets() {
@@ -101,7 +200,7 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         val ratio = width.toFloat() / height
 
         // Проекционная матрица
-        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1f, 1f, 3f, 20f)
+        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1f, 1f, 3f, 30f)
 
         // Видовая матрица (камера)
         Matrix.setLookAtM(viewMatrix, 0,
@@ -112,6 +211,8 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
 
     override fun onDrawFrame(gl: GL10?) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT or GLES20.GL_DEPTH_BUFFER_BIT)
+
+        drawBackground()
 
         // Вычисляем deltaTime для плавной анимации
         val currentTime = System.currentTimeMillis()
