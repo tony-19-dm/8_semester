@@ -42,7 +42,6 @@ class GalaxyRenderer(private val context: Context) : GLSurfaceView.Renderer {
     private var rotationAngle = 0f
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
-        // Серый фон (не влияет, т.к. квадрат закроет всё)
         GLES20.glClearColor(0.1f, 0.1f, 0.1f, 1.0f)
 
         square = Square()
@@ -83,7 +82,7 @@ class GalaxyRenderer(private val context: Context) : GLSurfaceView.Renderer {
     override fun onDrawFrame(gl: GL10?) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT or GLES20.GL_DEPTH_BUFFER_BIT)
 
-        // ---- 1. Рисуем КВАДРАТ (ФОН) ----
+        // ---- 1. Рисуем КВАДРАТ  ----
         // Отодвигаем назад и увеличиваем
         Matrix.setIdentityM(modelMatrixForSquare, 0)
         Matrix.translateM(modelMatrixForSquare, 0, 0f, 0f, -8f) // далеко назад
@@ -99,9 +98,9 @@ class GalaxyRenderer(private val context: Context) : GLSurfaceView.Renderer {
         // Рисуем квадрат
         drawSquare()
 
-        // ---- 2. Рисуем КУБ (по центру) ----
+        // ---- 2. Рисуем КУБ  ----
         Matrix.setIdentityM(modelMatrixForCube, 0)
-        // Легкое вращение для красоты (необязательно, но выглядит круто)
+        // Легкое вращение для красоты
         rotationAngle += 0.5f
         Matrix.rotateM(modelMatrixForCube, 0, rotationAngle, 0.5f, 1f, 0.3f)
 
@@ -199,7 +198,7 @@ class GalaxyRenderer(private val context: Context) : GLSurfaceView.Renderer {
         val bitmap = BitmapFactory.decodeResource(context.resources, resourceId, options)
 
         if (bitmap == null) {
-            // Если текстура не найдена — создаем шахматную доску (чтобы не крашилось)
+            // Если текстура не найдена — создаем шахматную доску
             val chessboard = createChessboardBitmap()
             GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, chessboard, 0)
             chessboard.recycle()
