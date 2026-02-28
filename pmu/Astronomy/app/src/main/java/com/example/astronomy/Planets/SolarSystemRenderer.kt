@@ -127,7 +127,7 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         // Матрица для фона: отодвинуть назад и увеличить
         val bgModelMatrix = FloatArray(16)
         android.opengl.Matrix.setIdentityM(bgModelMatrix, 0)
-        android.opengl.Matrix.translateM(bgModelMatrix, 0, 0f, -2f, -10f)  // далеко назад
+        android.opengl.Matrix.translateM(bgModelMatrix, 0, 0f, -5f, -10f)  // далеко назад
         android.opengl.Matrix.scaleM(bgModelMatrix, 0, 12f, 12f, 1f)      // растянуть
 
         // MVP матрица
