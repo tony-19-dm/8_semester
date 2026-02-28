@@ -30,6 +30,7 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
     private var colorHandle = 0
     private var lightPositionHandle = 0
 
+    private var emissiveHandle = 0
     // Матрицы
     private val projectionMatrix = FloatArray(16)
     private val viewMatrix = FloatArray(16)
@@ -57,37 +58,39 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         colorHandle = GLES20.glGetUniformLocation(program, "uColor")
         lightPositionHandle = GLES20.glGetUniformLocation(program, "uLightPosition")
 
+        emissiveHandle = GLES20.glGetUniformLocation(program, "uEmissive")
+
         // Инициализируем планеты
         initPlanets()
     }
 
     private fun initPlanets() {
 
-        sun = Planet(0.4f, 48, 48, floatArrayOf(1.0f, 0.8f, 0.3f, 1.0f)) // Желтый
+        sun = Planet(0.4f, 48, 48, floatArrayOf(1.0f, 1.0f, 0.0f, 0.0f)) // Желтый
 
-        earth = Planet(0.04f, 32, 32, floatArrayOf(0.2f, 0.6f, 1.0f, 1.0f)) // Голубой
-        earth.orbitRadius = 1.5f
+        earth = Planet(0.15f, 32, 32, floatArrayOf(0.2f, 0.6f, 1.0f, 1.0f)) // Голубой
+        earth.orbitRadius = 2.0f
         earth.orbitSpeed = 10f      // градусов в секунду
         earth.rotationSpeed = 360f  // полный оборот за 1 секунду
 
-        moon = Planet(0.01f, 16, 16, floatArrayOf(0.8f, 0.8f, 0.8f, 1.0f)) // Серый
-        moon.orbitRadius = 0.2f
+        moon = Planet(0.05f, 16, 16, floatArrayOf(0.8f, 0.8f, 0.8f, 1.0f)) // Серый
+        moon.orbitRadius = 0.5f
         moon.orbitSpeed = 40f
         moon.rotationSpeed = 0f
         moon.isMoon = true          // режим Луны
 
-        mars = Planet(0.03f, 32, 32, floatArrayOf(0.9f, 0.4f, 0.2f, 1.0f)) // Красный
-        mars.orbitRadius = 2.0f
+        mars = Planet(0.12f, 32, 32, floatArrayOf(0.9f, 0.4f, 0.2f, 1.0f)) // Красный
+        mars.orbitRadius = 2.8f
         mars.orbitSpeed = 8f
         mars.rotationSpeed = 350f
 
-        venus = Planet(0.035f, 32, 32, floatArrayOf(0.9f, 0.7f, 0.4f, 1.0f)) // Желтоватый
+        venus = Planet(0.13f, 32, 32, floatArrayOf(0.9f, 0.7f, 0.4f, 1.0f)) // Желтоватый
         venus.orbitRadius = 1.2f
         venus.orbitSpeed = 12f
         venus.rotationSpeed = 200f
 
-        jupiter = Planet(0.08f, 48, 48, floatArrayOf(0.8f, 0.6f, 0.4f, 1.0f)) // Коричневатый
-        jupiter.orbitRadius = 3.0f
+        jupiter = Planet(0.25f, 48, 48, floatArrayOf(0.8f, 0.6f, 0.4f, 1.0f)) // Коричневатый
+        jupiter.orbitRadius = 4.0f
         jupiter.orbitSpeed = 3f
         jupiter.rotationSpeed = 400f
     }
@@ -102,7 +105,7 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
 
         // Видовая матрица (камера)
         Matrix.setLookAtM(viewMatrix, 0,
-            0f, 3f, 8f,
+            0f, 5f, 12f,
             0f, 0f, 0f,
             0f, 1f, 0f)
     }
@@ -156,6 +159,12 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         // Вычисляем матрицу MVP
         Matrix.multiplyMM(mvpMatrix, 0, viewMatrix, 0, modelMatrix, 0)
         Matrix.multiplyMM(mvpMatrix, 0, projectionMatrix, 0, mvpMatrix, 0)
+
+        if (planet === sun) {
+            GLES20.glUniform1f(emissiveHandle, 1.0f)
+        } else {
+            GLES20.glUniform1f(emissiveHandle, 0.0f)
+        }
 
         // Передаем матрицы в шейдер
         GLES20.glUniformMatrix4fv(mvpMatrixHandle, 1, false, mvpMatrix, 0)
