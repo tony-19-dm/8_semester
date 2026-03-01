@@ -106,7 +106,7 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
 // Создаём программу для куба (простой шейдер с цветом)
         cubeProgram = createCubeProgram()
         cubePositionHandle = GLES20.glGetAttribLocation(cubeProgram, "aPosition")
-        cubeColorHandle = GLES20.glGetAttribLocation(cubeProgram, "aColor")
+//        cubeColorHandle = GLES20.glGetAttribLocation(cubeProgram, "aColor")
         cubeMVPMatrixHandle = GLES20.glGetUniformLocation(cubeProgram, "uMVPMatrix")
     }
 
@@ -262,15 +262,13 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
     private fun drawSelectionCube() {
         val selectedPlanet = planetsList[selectedPlanetIndex]
 
-        // Получаем МИРОВУЮ позицию выбранной планеты
+        // Получаем мировую позицию выбранной планеты
         val planetPos: FloatArray
 
         if (selectedPlanet === moon) {
-            // Для Луны: передаём матрицу Земли как родительскую
             val earthMatrix = earth.getModelMatrix(FloatArray(16).also { Matrix.setIdentityM(it, 0) })
             planetPos = moon.getWorldPosition(earthMatrix)
         } else {
-            // Для остальных планет: родительская матрица единичная
             planetPos = selectedPlanet.getWorldPosition()
         }
 
@@ -279,11 +277,11 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         Matrix.translateM(cubeModelMatrix, 0, planetPos[0], planetPos[1], planetPos[2])
 
         // Масштабируем под размер планеты + отступ
-        val scale = selectedPlanet.radius * 1.5f
+        val scale = selectedPlanet.radius * 1.8f  // увеличил отступ для лучшей видимости
         Matrix.scaleM(cubeModelMatrix, 0, scale, scale, scale)
 
-        // Небольшое вращение для красоты
-        Matrix.rotateM(cubeModelMatrix, 0, cubeRotationAngle, 1f, 0.5f, 0.3f)
+        // Вращение
+        Matrix.rotateM(cubeModelMatrix, 0, cubeRotationAngle, 0.7f, 0.7f, 0.7f) // равномерное вращение
 
         // Вычисляем MVP
         val mvpTemp = FloatArray(16)
@@ -293,29 +291,32 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         // Рисуем куб
         GLES20.glUseProgram(cubeProgram)
         GLES20.glUniformMatrix4fv(cubeMVPMatrixHandle, 1, false, mvpTemp, 0)
-        selectionCube.draw(cubeProgram, cubeMVPMatrixHandle, cubePositionHandle, cubeColorHandle)
+
+        // Получаем хендл для цвета
+        val colorUniform = GLES20.glGetUniformLocation(cubeProgram, "uColor")
+
+        // Рисуем куб
+        selectionCube.draw(cubeProgram, cubeMVPMatrixHandle, cubePositionHandle, colorUniform)
+
         GLES20.glUseProgram(program)
     }
 
     private fun createCubeProgram(): Int {
         val vertexShaderCode = """
         attribute vec4 aPosition;
-        attribute vec4 aColor;
-        varying vec4 vColor;
         uniform mat4 uMVPMatrix;
         void main() {
             gl_Position = uMVPMatrix * aPosition;
-            vColor = aColor;
         }
-        """.trimIndent()
+    """.trimIndent()
 
         val fragmentShaderCode = """
         precision mediump float;
-        varying vec4 vColor;
+        uniform vec4 uColor;
         void main() {
-            gl_FragColor = vColor;
+            gl_FragColor = uColor;
         }
-        """.trimIndent()
+    """.trimIndent()
 
         val vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)
         val fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode)
