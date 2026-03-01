@@ -1,10 +1,14 @@
 package com.example.astronomy.Planets
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
+import com.example.astronomy.MoonDetailActivity
 import com.example.astronomy.R
+import com.example.astronomy.opengl.SelectionCube
 import com.example.astronomy.opengl.ShaderHelper
 import com.example.astronomy.opengl.Square
 import javax.microedition.khronos.egl.EGLConfig
@@ -50,6 +54,21 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
     // Время для анимации
     private var previousTime = System.currentTimeMillis()
 
+    private lateinit var selectionCube: SelectionCube
+    private var cubeProgram = 0
+    private var cubePositionHandle = 0
+    private var cubeColorHandle = 0
+    private var cubeMVPMatrixHandle = 0
+
+    // Список планет для выбора
+    private val planetsList = mutableListOf<Planet>()
+    private var selectedPlanetIndex = 0
+
+    // Матрица для куба
+    private val cubeModelMatrix = FloatArray(16)
+
+    private var cubeRotationAngle = 0f
+
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
         GLES20.glEnable(GLES20.GL_DEPTH_TEST)
@@ -80,6 +99,15 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
 
         // Инициализируем планеты
         initPlanets()
+
+        // Создаём куб выбора
+        selectionCube = SelectionCube()
+
+// Создаём программу для куба (простой шейдер с цветом)
+        cubeProgram = createCubeProgram()
+        cubePositionHandle = GLES20.glGetAttribLocation(cubeProgram, "aPosition")
+        cubeColorHandle = GLES20.glGetAttribLocation(cubeProgram, "aColor")
+        cubeMVPMatrixHandle = GLES20.glGetUniformLocation(cubeProgram, "uMVPMatrix")
     }
 
     private fun createBackgroundProgram(): Int {
@@ -192,6 +220,110 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         jupiter.orbitRadius = 4.0f
         jupiter.orbitSpeed = 3f
         jupiter.rotationSpeed = 400f
+
+        sun.name = "Солнце"
+        earth.name = "Земля"
+        moon.name = "Луна"
+        mars.name = "Марс"
+        venus.name = "Венера"
+        jupiter.name = "Юпитер"
+
+        planetsList.clear()
+        planetsList.add(sun)
+        planetsList.add(venus)
+        planetsList.add(earth)
+        planetsList.add(moon)
+        planetsList.add(mars)
+        planetsList.add(jupiter)
+    }
+
+    fun selectNextPlanet() {
+        selectedPlanetIndex = (selectedPlanetIndex + 1) % planetsList.size
+    }
+
+    fun selectPreviousPlanet() {
+        selectedPlanetIndex = (selectedPlanetIndex - 1 + planetsList.size) % planetsList.size
+    }
+
+    fun showPlanetInfo(activity: Activity) {
+        val selectedPlanet = planetsList[selectedPlanetIndex]
+        if (selectedPlanet === moon) {
+            // Если выбрана Луна - открываем детальный экран
+            val intent = Intent(activity, MoonDetailActivity::class.java)
+            activity.startActivity(intent)
+        } else {
+            // Для других планет можно показать Toast или диалог
+            android.widget.Toast.makeText(activity,
+                "Выбрана: ${selectedPlanet.name}",
+                android.widget.Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun drawSelectionCube() {
+        val selectedPlanet = planetsList[selectedPlanetIndex]
+
+        // Получаем МИРОВУЮ позицию выбранной планеты
+        val planetPos: FloatArray
+
+        if (selectedPlanet === moon) {
+            // Для Луны: передаём матрицу Земли как родительскую
+            val earthMatrix = earth.getModelMatrix(FloatArray(16).also { Matrix.setIdentityM(it, 0) })
+            planetPos = moon.getWorldPosition(earthMatrix)
+        } else {
+            // Для остальных планет: родительская матрица единичная
+            planetPos = selectedPlanet.getWorldPosition()
+        }
+
+        // Матрица для куба
+        Matrix.setIdentityM(cubeModelMatrix, 0)
+        Matrix.translateM(cubeModelMatrix, 0, planetPos[0], planetPos[1], planetPos[2])
+
+        // Масштабируем под размер планеты + отступ
+        val scale = selectedPlanet.radius * 1.5f
+        Matrix.scaleM(cubeModelMatrix, 0, scale, scale, scale)
+
+        // Небольшое вращение для красоты
+        Matrix.rotateM(cubeModelMatrix, 0, cubeRotationAngle, 1f, 0.5f, 0.3f)
+
+        // Вычисляем MVP
+        val mvpTemp = FloatArray(16)
+        Matrix.multiplyMM(mvpTemp, 0, viewMatrix, 0, cubeModelMatrix, 0)
+        Matrix.multiplyMM(mvpTemp, 0, projectionMatrix, 0, mvpTemp, 0)
+
+        // Рисуем куб
+        GLES20.glUseProgram(cubeProgram)
+        GLES20.glUniformMatrix4fv(cubeMVPMatrixHandle, 1, false, mvpTemp, 0)
+        selectionCube.draw(cubeProgram, cubeMVPMatrixHandle, cubePositionHandle, cubeColorHandle)
+        GLES20.glUseProgram(program)
+    }
+
+    private fun createCubeProgram(): Int {
+        val vertexShaderCode = """
+        attribute vec4 aPosition;
+        attribute vec4 aColor;
+        varying vec4 vColor;
+        uniform mat4 uMVPMatrix;
+        void main() {
+            gl_Position = uMVPMatrix * aPosition;
+            vColor = aColor;
+        }
+        """.trimIndent()
+
+        val fragmentShaderCode = """
+        precision mediump float;
+        varying vec4 vColor;
+        void main() {
+            gl_FragColor = vColor;
+        }
+        """.trimIndent()
+
+        val vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)
+        val fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode)
+        val program = GLES20.glCreateProgram()
+        GLES20.glAttachShader(program, vertexShader)
+        GLES20.glAttachShader(program, fragmentShader)
+        GLES20.glLinkProgram(program)
+        return program
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
@@ -242,14 +374,21 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
 
         // Рисуем Юпитер
         drawPlanet(jupiter, FloatArray(16).also { Matrix.setIdentityM(it, 0) })
+
+        // Обновляем угол вращения куба
+        cubeRotationAngle += deltaTime * 100f  // 100 градусов в секунду
+        if (cubeRotationAngle > 360f) cubeRotationAngle -= 360f
+
+        drawSelectionCube()
     }
 
     private fun updatePlanets(deltaTime: Float) {
         sun.update(deltaTime)
+        venus.update(deltaTime)
         earth.update(deltaTime)
+        // Луну обновляем отдельно, но она сама обновит свои углы
         moon.update(deltaTime)
         mars.update(deltaTime)
-        venus.update(deltaTime)
         jupiter.update(deltaTime)
     }
 

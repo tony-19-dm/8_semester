@@ -3,13 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- OpenGL View будет вставлен сюда программно -->
     <FrameLayout
         android:id="@+id/gl_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Кнопка возврата -->
+    <!-- Кнопка возврата (слева сверху) -->
     <Button
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
@@ -18,9 +17,41 @@
         android:text="← Назад"
         android:backgroundTint="@android:color/holo_blue_dark"
         android:textColor="@android:color/white"
-        android:elevation="4dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:layout_gravity="top|start" />
+
+    <!-- Панель с кнопками управления -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="◀ Влево"
+            android:backgroundTint="@android:color/holo_orange_dark"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="16dp" />
+
+        <Button
+            android:id="@+id/btn_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ℹ Информация"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="16dp" />
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Вправо ▶"
+            android:backgroundTint="@android:color/holo_orange_dark"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
 </FrameLayout>
