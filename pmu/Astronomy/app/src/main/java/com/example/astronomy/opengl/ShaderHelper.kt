@@ -1,10 +1,10 @@
 package com.example.astronomy.opengl
 
 object ShaderHelper {
-    // Вершинный шейдер с освещением
+    // Вершинный шейдер для планет (с освещением)
     val vertexShaderCode = """
         uniform mat4 uMVPMatrix;
-        uniform mat4 uModelMatrix;     // для преобразования нормалей
+        uniform mat4 uModelMatrix;
         attribute vec4 aPosition;
         attribute vec3 aNormal;
         varying vec3 vNormal;
@@ -17,7 +17,40 @@ object ShaderHelper {
         }
     """.trimIndent()
 
-    private val bgVertexShaderCode = """
+    // Фрагментный шейдер для планет (с эмиссивной компонентой)
+    val fragmentShaderCode = """
+        precision mediump float;
+        uniform vec4 uColor;
+        uniform vec3 uLightPosition;
+        uniform float uEmissive;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        
+        void main() {
+            vec3 normal = normalize(vNormal);
+            vec3 lightDir = normalize(uLightPosition - vPosition);
+            vec3 viewDir = vec3(0.0, 0.0, 1.0);
+            
+            // Ambient
+            float ambient = 0.3;
+            
+            // Diffuse
+            float diffuse = max(dot(normal, lightDir), 0.0);
+            
+            // Specular
+            vec3 reflectDir = reflect(-lightDir, normal);
+            float specular = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+            
+            // Emissive (для Солнца uEmissive = 1.0, для планет = 0.0)
+            vec3 emissive = uEmissive * uColor.rgb;
+            
+            vec3 finalColor = uColor.rgb * (ambient + diffuse + specular * 0.5) + emissive;
+            gl_FragColor = vec4(finalColor, uColor.a);
+        }
+    """.trimIndent()
+
+    // Вершинный шейдер для фона (простой, без освещения)
+    val bgVertexShaderCode = """
         attribute vec4 aPosition;
         attribute vec2 aTexCoord;
         varying vec2 vTexCoord;
@@ -28,40 +61,13 @@ object ShaderHelper {
         }
     """.trimIndent()
 
-        private val bgFragmentShaderCode = """
+    // Фрагментный шейдер для фона (только текстура)
+    val bgFragmentShaderCode = """
         precision mediump float;
         varying vec2 vTexCoord;
         uniform sampler2D uTexture;
         void main() {
             gl_FragColor = texture2D(uTexture, vTexCoord);
-        }
-    """.trimIndent()
-
-    // Фрагментный шейдер с моделью Фонга
-    val fragmentShaderCode = """
-        precision mediump float;
-        uniform vec4 uColor;
-        uniform vec3 uLightPosition;
-        varying vec3 vNormal;
-        varying vec3 vPosition;
-        
-        void main() {
-            vec3 normal = normalize(vNormal);
-            vec3 lightDir = normalize(uLightPosition - vPosition);
-            vec3 viewDir = vec3(0.0, 0.0, 1.0); // упрощенно
-            
-            // Ambient (фоновое)
-            float ambient = 0.3;
-            
-            // Diffuse (рассеянный свет)
-            float diffuse = max(dot(normal, lightDir), 0.0);
-            
-            // Specular (блики)
-            vec3 reflectDir = reflect(-lightDir, normal);
-            float specular = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
-            
-            vec3 finalColor = uColor.rgb * (ambient + diffuse + specular * 0.5);
-            gl_FragColor = vec4(finalColor, uColor.a);
         }
     """.trimIndent()
 }

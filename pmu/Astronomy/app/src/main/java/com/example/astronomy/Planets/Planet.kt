@@ -10,7 +10,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class Planet(
-    private val radius: Float,
+    val radius: Float,
     private val stacks: Int = 48,
     private val slices: Int = 48,
     private val color: FloatArray = floatArrayOf(1f, 1f, 1f, 1f)
@@ -19,6 +19,8 @@ class Planet(
     private var normalBuffer: FloatBuffer
     private var indexBuffer: java.nio.ShortBuffer
     private val indexCount: Int
+
+    var name: String = ""
 
     // Параметры движения
     var orbitRadius: Float = 0f
@@ -199,5 +201,29 @@ class Planet(
 
         GLES20.glDisableVertexAttribArray(positionHandle)
         GLES20.glDisableVertexAttribArray(normalHandle)
+    }
+
+    fun getWorldPosition(parentMatrix: FloatArray = FloatArray(16).also { Matrix.setIdentityM(it, 0) }): FloatArray {
+        if (!isMoon) {
+            // Для обычных планет: вычисляем матрицу и извлекаем позицию
+            val matrix = getModelMatrix(parentMatrix)
+            return floatArrayOf(matrix[12], matrix[13], matrix[14])
+        } else {
+            // Для Луны: особый случай - нужно передать матрицу Земли
+            val earthPosX = parentMatrix[12]
+            val earthPosY = parentMatrix[13]
+            val earthPosZ = parentMatrix[14]
+
+            // Вычисляем смещение Луны (как в getModelMatrix)
+            val moonOffsetX = 0f
+            val moonOffsetY = orbitRadius * kotlin.math.cos(Math.toRadians(moonOrbitAngle.toDouble())).toFloat()
+            val moonOffsetZ = orbitRadius * kotlin.math.sin(Math.toRadians(moonOrbitAngle.toDouble())).toFloat()
+
+            return floatArrayOf(
+                earthPosX + moonOffsetX,
+                earthPosY + moonOffsetY,
+                earthPosZ + moonOffsetZ
+            )
+        }
     }
 }
