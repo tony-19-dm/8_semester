@@ -248,11 +248,9 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
     fun showPlanetInfo(activity: Activity) {
         val selectedPlanet = planetsList[selectedPlanetIndex]
         if (selectedPlanet === moon) {
-            // Если выбрана Луна - открываем детальный экран
             val intent = Intent(activity, MoonDetailActivity::class.java)
             activity.startActivity(intent)
         } else {
-            // Для других планет можно показать Toast или диалог
             android.widget.Toast.makeText(activity,
                 "Выбрана: ${selectedPlanet.name}",
                 android.widget.Toast.LENGTH_SHORT).show()
@@ -276,11 +274,10 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         Matrix.setIdentityM(cubeModelMatrix, 0)
         Matrix.translateM(cubeModelMatrix, 0, planetPos[0], planetPos[1], planetPos[2])
 
-        // Масштабируем под размер планеты + отступ
-        val scale = selectedPlanet.radius * 1.8f  // увеличил отступ для лучшей видимости
+        // Масштабируем под размер планеты
+        val scale = selectedPlanet.radius * 1.8f
         Matrix.scaleM(cubeModelMatrix, 0, scale, scale, scale)
 
-        // Вращение
         Matrix.rotateM(cubeModelMatrix, 0, cubeRotationAngle, 0.7f, 0.7f, 0.7f) // равномерное вращение
 
         // Вычисляем MVP

@@ -64,7 +64,6 @@ class MoonRenderer(private val context: Context) : GLSurfaceView.Renderer {
         GLES20.glUniform3f(lightPositionHandle, lightPosition[0], lightPosition[1], lightPosition[2])
         GLES20.glUniform1f(emissiveHandle, 0.0f)
 
-        // Вращаем Луну для красоты
         val modelMatrix = FloatArray(16)
         Matrix.setIdentityM(modelMatrix, 0)
         Matrix.rotateM(modelMatrix, 0, System.currentTimeMillis() * 0.05f, 0f, 1f, 0f)
