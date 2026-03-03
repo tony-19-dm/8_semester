@@ -86,14 +86,13 @@ def main():
 
         h1, h2, h3 = compute_entropies(text)
 
-        # Максимальная энтропия (по фактическому набору символов в файле)
+        # Максимальная энтропия
         unique_chars = set(text)
         max_ent = math.log2(len(unique_chars)) if unique_chars else 0
 
         # Теоретическая энтропия
         if has_theory:
             if fname == "file1.txt":
-                # равномерное распределение
                 p = 1 / len(syms)
                 theoretical = shannon_entropy([p] * len(syms))
             else:
@@ -103,7 +102,6 @@ def main():
 
         results.append((fname, h1, h2, h3, max_ent, theoretical))
 
-    # Вывод таблицы
     print("\n" + "="*80)
     print("Оценки энтропии (в битах на символ)")
     print("="*80)
