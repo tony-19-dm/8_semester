@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Поиск автомобилей{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Поиск автомобилей</h1>
+    
+    <form method="POST" class="search-form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.query.label }}
+            {{ form.query(class="form-control", placeholder="Введите название модели...") }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.min_rating.label }}
+            {{ form.min_rating(class="form-control") }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Поиск</button>
+    </form>
+    
+    {% if search_performed %}
+        {% if results %}
+        <div class="search-results">
+            <h2>Результаты поиска ({{ results|length }})</h2>
+            <div class="cars-grid">
+                {% for item in results %}
+                <div class="car-card">
+                    <h3>{{ item.car.brand }} {{ item.car.name }}</h3>
+                    <p class="price">{{ item.car.price_formatted }}</p>
+                    {% if item.avg_rating %}
+                    <p class="rating">Рейтинг: {{ item.avg_rating }}/5 ({{ item.rating_count }} {{ 'оценка' if item.rating_count == 1 else 'оценок' if item.rating_count < 5 else 'оценок' }})</p>
+                    {% else %}
+                    <p class="rating">Нет оценок</p>
+                    {% endif %}
+                    <a href="{{ url_for('car_detail', product_id=item.car.id) }}" class="btn">Подробнее</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <p class="no-data">Ничего не найдено</p>
+        {% endif %}
+    {% elif request.method == 'GET' %}
+    <p class="info">Введите параметры поиска и нажмите "Поиск"</p>
+    {% endif %}
+</div>
+{% endblock %}

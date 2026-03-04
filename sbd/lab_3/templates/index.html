@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Наши автомобили</h1>
+    
+    {% if cars %}
+    <div class="cars-grid">
+        {% for car in cars %}
+        <div class="car-card">
+            <h3>{{ car.brand }} {{ car.name }}</h3>
+            <p class="price">{{ car.price_formatted }}</p>
+            <p class="stock">В наличии: {{ car.stock }} шт.</p>
+            <a href="{{ url_for('car_detail', product_id=car.id) }}" class="btn">Подробнее</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="no-data">Пока нет автомобилей. <a href="{{ url_for('add_car') }}">Добавить первый автомобиль</a></p>
+    {% endif %}
+</div>
+{% endblock %}

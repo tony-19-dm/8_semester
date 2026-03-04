@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}{{ car.brand }} {{ car.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="car-detail">
+        <h1>{{ car.brand }} {{ car.name }}</h1>
+        <div class="car-info">
+            <p><strong>Описание:</strong> {{ car.description or 'Нет описания' }}</p>
+            <p><strong>Цена:</strong> <span class="price">{{ car.price_formatted }}</span></p>
+            <p><strong>В наличии:</strong> {{ car.stock }} шт.</p>
+        </div>
+    </div>
+    
+    <div class="comments-section">
+        <h2>Отзывы</h2>
+        
+        {% if comments %}
+        <div class="comments-list">
+            {% for comment in comments %}
+            <div class="comment">
+                <div class="comment-header">
+                    <span class="comment-author">{{ comment.author }}</span>
+                    <span class="comment-date">{{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                    <span class="comment-rating">Оценка: {{ comment.rating }}/5</span>
+                </div>
+                <div class="comment-text">{{ comment.text }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="no-data">Пока нет отзывов. Будьте первым!</p>
+        {% endif %}
+        
+        <div class="add-comment">
+            <h3>Оставить отзыв</h3>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                
+                <div class="form-group">
+                    {{ form.author.label }}
+                    {{ form.author(class="form-control") }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.text.label }}
+                    {{ form.text(class="form-control", rows=3) }}
+                    {% if form.text.errors %}
+                        {% for error in form.text.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.rating.label }}
+                    {{ form.rating(class="form-control") }}
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="actions">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">На главную</a>
+    </div>
+</div>
+{% endblock %}

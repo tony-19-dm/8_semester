@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить автомобиль{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Добавить новый автомобиль</h1>
+    
+    <form method="POST" class="car-form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.brand.label }}
+            {{ form.brand(class="form-control") }}
+            {% if form.brand.errors %}
+                {% for error in form.brand.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.name.label }}
+            {{ form.name(class="form-control") }}
+            {% if form.name.errors %}
+                {% for error in form.name.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.description.label }}
+            {{ form.description(class="form-control", rows=4) }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.price.label }}
+            {{ form.price(class="form-control") }}
+            {% if form.price.errors %}
+                {% for error in form.price.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.stock.label }}
+            {{ form.stock(class="form-control") }}
+            {% if form.stock.errors %}
+                {% for error in form.stock.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Добавить автомобиль</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}
