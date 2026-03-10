@@ -38,7 +38,7 @@ def compute_entropies(text):
 
     return h1, h2, h3
 
-def process_english_text(filename):
+def process_text(filename):
     """Читает файл, приводит к нижнему регистру, оставляет только а-я и пробел."""
     with open(filename, 'r', encoding='utf-8') as f:
         text = f.read()
@@ -79,7 +79,7 @@ def main():
     results = []
     for fname, need_process, syms, tprobs, has_theory in files:
         if need_process:
-            text = process_english_text(fname)
+            text = process_text(fname)
         else:
             with open(fname, 'r', encoding='utf-8') as f:
                 text = f.read()
