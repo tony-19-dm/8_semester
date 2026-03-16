@@ -7,6 +7,7 @@ import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
 import com.example.astronomy.MoonDetailActivity
+import com.example.astronomy.PlanetInfoActivity
 import com.example.astronomy.R
 import com.example.astronomy.opengl.SelectionCube
 import com.example.astronomy.opengl.ShaderHelper
@@ -247,14 +248,15 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
 
     fun showPlanetInfo(activity: Activity) {
         val selectedPlanet = planetsList[selectedPlanetIndex]
-        if (selectedPlanet === moon) {
-            val intent = Intent(activity, MoonDetailActivity::class.java)
-            activity.startActivity(intent)
-        } else {
-            android.widget.Toast.makeText(activity,
-                "Выбрана: ${selectedPlanet.name}",
-                android.widget.Toast.LENGTH_SHORT).show()
-        }
+
+        // Создаём Intent для PlanetInfoActivity
+        val intent = Intent(activity, PlanetInfoActivity::class.java)
+
+        // Передаём название выбранной планеты
+        intent.putExtra("planet_name", selectedPlanet.name)
+
+        // Запускаем Activity
+        activity.startActivity(intent)
     }
 
     private fun drawSelectionCube() {
