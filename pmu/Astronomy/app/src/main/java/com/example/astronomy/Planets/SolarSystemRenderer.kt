@@ -32,6 +32,8 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
     private lateinit var venus: Planet
     private lateinit var jupiter: Planet
 
+    private lateinit var neptune: Planet
+
     // Шейдерная программа
     private var program = 0
 
@@ -229,6 +231,13 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         venus.name = "Венера"
         jupiter.name = "Юпитер"
 
+        // Добавьте в initPlanets:
+        neptune = Planet(0.22f, 48, 48, floatArrayOf(0.0f, 0.0f, 0.8f, 1.0f)) // Синий
+        neptune.orbitRadius = 5.0f
+        neptune.orbitSpeed = 2f
+        neptune.rotationSpeed = 300f
+        neptune.name = "Нептун"
+
         planetsList.clear()
         planetsList.add(sun)
         planetsList.add(venus)
@@ -236,6 +245,7 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         planetsList.add(moon)
         planetsList.add(mars)
         planetsList.add(jupiter)
+        planetsList.add(neptune)
     }
 
     fun selectNextPlanet() {
@@ -375,6 +385,8 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         // Рисуем Юпитер
         drawPlanet(jupiter, FloatArray(16).also { Matrix.setIdentityM(it, 0) })
 
+        drawPlanet(neptune, FloatArray(16).also { Matrix.setIdentityM(it, 0) })
+
         // Обновляем угол вращения куба
         cubeRotationAngle += deltaTime * 100f  // 100 градусов в секунду
         if (cubeRotationAngle > 360f) cubeRotationAngle -= 360f
@@ -390,6 +402,7 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         moon.update(deltaTime)
         mars.update(deltaTime)
         jupiter.update(deltaTime)
+        neptune.update(deltaTime)
     }
 
     private fun drawPlanet(planet: Planet, parentMatrix: FloatArray): FloatArray {
