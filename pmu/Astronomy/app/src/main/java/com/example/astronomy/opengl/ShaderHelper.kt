@@ -70,4 +70,27 @@ object ShaderHelper {
             gl_FragColor = texture2D(uTexture, vTexCoord);
         }
     """.trimIndent()
+
+    val blackHoleVertexShader = """
+        attribute vec4 aPosition;
+        uniform mat4 uMVPMatrix;
+        varying vec2 vPosition;
+        void main() {
+            gl_Position = uMVPMatrix * aPosition;
+            vPosition = aPosition.xy;
+        }
+    """.trimIndent()
+
+    val blackHoleFragmentShader = """
+        precision mediump float;
+        varying vec2 vPosition;
+        uniform float uAlpha;
+        void main() {
+            float dist = length(vPosition);
+            // Прозрачность увеличивается к краям (dist ближе к 1)
+            float alpha = 1.0 - dist * dist;
+            alpha = clamp(alpha, 0.0, 1.0);
+            gl_FragColor = vec4(0.0, 0.0, 0.0, alpha * uAlpha);
+        }
+    """.trimIndent()
 }

@@ -11,6 +11,7 @@ import com.example.astronomy.PlanetInfoActivity
 import com.example.astronomy.R
 import com.example.astronomy.opengl.SelectionCube
 import com.example.astronomy.opengl.ShaderHelper
+import com.example.astronomy.opengl.SimpleBlackHole
 import com.example.astronomy.opengl.Square
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -72,6 +73,16 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
 
     private var cubeRotationAngle = 0f
 
+    private lateinit var blackHole: SimpleBlackHole
+    private var blackHoleX = -5f
+    private var blackHoleY = 3f
+    private var blackHolePhase = 0f
+
+    private var blackHoleProgram = 0
+    private var blackHolePositionHandle = 0
+    private var blackHoleMVPMatrixHandle = 0
+    private var blackHoleAlphaHandle = 0
+
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
         GLES20.glEnable(GLES20.GL_DEPTH_TEST)
@@ -111,6 +122,23 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         cubePositionHandle = GLES20.glGetAttribLocation(cubeProgram, "aPosition")
 //        cubeColorHandle = GLES20.glGetAttribLocation(cubeProgram, "aColor")
         cubeMVPMatrixHandle = GLES20.glGetUniformLocation(cubeProgram, "uMVPMatrix")
+
+        blackHoleProgram = createBlackHoleProgram()
+        blackHolePositionHandle = GLES20.glGetAttribLocation(blackHoleProgram, "aPosition")
+        blackHoleMVPMatrixHandle = GLES20.glGetUniformLocation(blackHoleProgram, "uMVPMatrix")
+        blackHoleAlphaHandle = GLES20.glGetUniformLocation(blackHoleProgram, "uAlpha")
+
+        blackHole = SimpleBlackHole()
+    }
+
+    private fun createBlackHoleProgram(): Int {
+        val vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, ShaderHelper.blackHoleVertexShader)
+        val fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderHelper.blackHoleFragmentShader)
+        val program = GLES20.glCreateProgram()
+        GLES20.glAttachShader(program, vertexShader)
+        GLES20.glAttachShader(program, fragmentShader)
+        GLES20.glLinkProgram(program)
+        return program
     }
 
     private fun createBackgroundProgram(): Int {
@@ -191,6 +219,34 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         GLES20.glDisableVertexAttribArray(bgTexCoordHandle)
 
         // Возвращаем программу планет
+        GLES20.glUseProgram(program)
+    }
+
+    private fun drawBlackHole() {
+        GLES20.glUseProgram(blackHoleProgram)
+
+        GLES20.glEnable(GLES20.GL_BLEND)
+        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA)
+
+        // Создаём матрицу модели
+        val modelMatrix = FloatArray(16)
+        val mvpTemp = FloatArray(16)
+
+        Matrix.setIdentityM(modelMatrix, 0)
+        Matrix.translateM(modelMatrix, 0, blackHoleX, blackHoleY, -8f)
+        Matrix.scaleM(modelMatrix, 0, 0.8f, 0.8f, 1f)
+
+        Matrix.multiplyMM(mvpTemp, 0, viewMatrix, 0, modelMatrix, 0)
+        Matrix.multiplyMM(mvpTemp, 0, projectionMatrix, 0, mvpTemp, 0)
+        GLES20.glUniformMatrix4fv(blackHoleMVPMatrixHandle, 1, false, mvpTemp, 0)
+
+        // Общая прозрачность
+        GLES20.glUniform1f(blackHoleAlphaHandle, 0.9f)
+
+        // Рисуем круг
+        blackHole.drawWithProgram(blackHoleProgram, blackHoleMVPMatrixHandle, blackHolePositionHandle)
+
+        GLES20.glDisable(GLES20.GL_BLEND)
         GLES20.glUseProgram(program)
     }
 
@@ -354,12 +410,26 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
     override fun onDrawFrame(gl: GL10?) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT or GLES20.GL_DEPTH_BUFFER_BIT)
 
-        drawBackground()
+        drawBackground()  // 1. Сначала фон
 
         // Вычисляем deltaTime для плавной анимации
         val currentTime = System.currentTimeMillis()
         val deltaTime = (currentTime - previousTime) / 1000f
         previousTime = currentTime
+
+        // Обновляем позицию чёрной дыры (пролетает по диагонали)
+        blackHoleX += deltaTime * 1.2f
+        blackHoleY -= deltaTime * 0.8f
+        blackHolePhase += deltaTime * 3f
+
+        // Если улетела за экран - возвращаем в начало
+        if (blackHoleX > 6f || blackHoleY < -4f) {
+            blackHoleX = -6f
+            blackHoleY = 4f
+        }
+
+        // Рисуем чёрную дыру (2. после фона)
+        drawBlackHole()
 
         // Обновляем позиции планет
         updatePlanets(deltaTime)
@@ -388,10 +458,10 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         drawPlanet(neptune, FloatArray(16).also { Matrix.setIdentityM(it, 0) })
 
         // Обновляем угол вращения куба
-        cubeRotationAngle += deltaTime * 100f  // 100 градусов в секунду
+        cubeRotationAngle += deltaTime * 100f
         if (cubeRotationAngle > 360f) cubeRotationAngle -= 360f
 
-        drawSelectionCube()
+        drawSelectionCube()  // 3. Куб поверх всего
     }
 
     private fun updatePlanets(deltaTime: Float) {
