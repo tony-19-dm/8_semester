@@ -19,17 +19,6 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:scaleType="centerCrop" />
-        ы
-        <Button
-            android:id="@+id/btn_view_3d"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:text="3D просмотр"
-            android:visibility="gone"
-            android:backgroundTint="@android:color/holo_orange_dark"
-            android:textColor="@android:color/white" />
 
         <!-- Название планеты -->
         <TextView

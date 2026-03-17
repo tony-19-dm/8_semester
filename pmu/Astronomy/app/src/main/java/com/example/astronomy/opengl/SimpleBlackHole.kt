@@ -11,7 +11,7 @@ import kotlin.math.PI
 
 class SimpleBlackHole {
 
-    private val segments = 64
+    private val segments = 64  // увеличил для более плавного градиента
     private val vertices: FloatArray
     private val vertexBuffer: FloatBuffer
     private val indexBuffer: ShortBuffer
@@ -44,7 +44,7 @@ class SimpleBlackHole {
             }
         }
 
-        // Индексы для треугольников
+        // Индексы для треугольников (веер из центра)
         val indices = ShortArray(segments * 3)
         for (i in 0 until segments) {
             indices[i * 3] = 0
@@ -63,6 +63,12 @@ class SimpleBlackHole {
         }
     }
 
+    /**
+     * Рисует чёрную дыру с использованием отдельной шейдерной программы
+     * @param program шейдерная программа (должна содержать aPosition и uMVPMatrix)
+     * @param mvpMatrixHandle хендл для матрицы MVP
+     * @param positionHandle хендл для позиции
+     */
     fun drawWithProgram(program: Int, mvpMatrixHandle: Int, positionHandle: Int) {
         GLES20.glUseProgram(program)
 

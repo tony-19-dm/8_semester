@@ -28,7 +28,6 @@
         <activity android:name=".GalaxyActivity" />
         <activity android:name=".MoonDetailActivity" />
         <activity android:name=".PlanetInfoActivity" />
-        <activity android:name=".NeptuneDetailActivity" />
     </application>
 
 </manifest>

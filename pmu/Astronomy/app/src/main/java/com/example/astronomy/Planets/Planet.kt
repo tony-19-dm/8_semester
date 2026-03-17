@@ -9,15 +9,15 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-open class Planet(
+class Planet(
     val radius: Float,
     private val stacks: Int = 48,
     private val slices: Int = 48,
     private val color: FloatArray = floatArrayOf(1f, 1f, 1f, 1f)
 ) {
-    var vertexBuffer: FloatBuffer
-    var normalBuffer: FloatBuffer
-    var indexBuffer: java.nio.ShortBuffer
+    private var vertexBuffer: FloatBuffer
+    private var normalBuffer: FloatBuffer
+    private var indexBuffer: java.nio.ShortBuffer
     private val indexCount: Int
 
     var name: String = ""
@@ -28,9 +28,6 @@ open class Planet(
     var rotationSpeed: Float = 0f
     var orbitAngle: Float = 0f
     var rotationAngle: Float = 0f
-
-    var textureId: Int = 0
-    var useTexture: Boolean = false
 
     // Специальный режим для Луны
     var isMoon: Boolean = false
@@ -229,58 +226,4 @@ open class Planet(
             )
         }
     }
-
-    fun drawWithTexture(program: Int, mvpMatrixHandle: Int, modelMatrixHandle: Int,
-                        positionHandle: Int, normalHandle: Int, texCoordHandle: Int,
-                        textureUniformHandle: Int) {
-
-        // Вершинный буфер (позиция)
-        vertexBuffer.position(0)
-        GLES20.glEnableVertexAttribArray(positionHandle)
-        GLES20.glVertexAttribPointer(positionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer)
-
-        // Буфер нормалей
-        normalBuffer.position(0)
-        GLES20.glEnableVertexAttribArray(normalHandle)
-        GLES20.glVertexAttribPointer(normalHandle, 3, GLES20.GL_FLOAT, false, 0, normalBuffer)
-
-        // Генерируем текстурные координаты для сферы
-        val texCoords = generateTexCoords()
-        val texCoordBuffer = ByteBuffer.allocateDirect(texCoords.size * 4).run {
-            order(ByteOrder.nativeOrder())
-            asFloatBuffer().apply {
-                put(texCoords)
-                position(0)
-            }
-        }
-
-        GLES20.glEnableVertexAttribArray(texCoordHandle)
-        GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, texCoordBuffer)
-
-        // Биндим текстуру
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId)
-        GLES20.glUniform1i(textureUniformHandle, 0)
-
-        // Рисуем
-        GLES20.glDrawElements(GLES20.GL_TRIANGLES, indexBuffer.capacity(), GLES20.GL_UNSIGNED_SHORT, indexBuffer)
-
-        GLES20.glDisableVertexAttribArray(positionHandle)
-        GLES20.glDisableVertexAttribArray(normalHandle)
-        GLES20.glDisableVertexAttribArray(texCoordHandle)
-    }
-
-    // Метод для генерации текстурных координат сферы
-    private fun generateTexCoords(): FloatArray {
-        val texCoords = FloatArray((stacks + 1) * (slices + 1) * 2)
-        var index = 0
-        for (i in 0..stacks) {
-            for (j in 0..slices) {
-                texCoords[index++] = j.toFloat() / slices  // u координата (0..1)
-                texCoords[index++] = i.toFloat() / stacks  // v координата (0..1)
-            }
-        }
-        return texCoords
-    }
-
 }
