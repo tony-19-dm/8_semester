@@ -33,7 +33,7 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
     private lateinit var venus: Planet
     private lateinit var jupiter: Planet
 
-    private lateinit var neptune: Planet
+    private lateinit var neptune: WaterPlanet
 
     // Шейдерная программа
     private var program = 0
@@ -83,6 +83,16 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
     private var blackHoleMVPMatrixHandle = 0
     private var blackHoleAlphaHandle = 0
 
+    private var textureProgram = 0
+    private var texPositionHandle = 0
+    private var texNormalHandle = 0
+    private var texTexCoordHandle = 0
+    private var texMVPMatrixHandle = 0
+    private var texModelMatrixHandle = 0
+    private var texLightPositionHandle = 0
+    private var texEmissiveHandle = 0
+    private var texTextureUniformHandle = 0
+
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
         GLES20.glEnable(GLES20.GL_DEPTH_TEST)
@@ -111,13 +121,23 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
 
         emissiveHandle = GLES20.glGetUniformLocation(program, "uEmissive")
 
+        // Создаём программу с текстурами
+        textureProgram = createTextureProgram()
+        texPositionHandle = GLES20.glGetAttribLocation(textureProgram, "aPosition")
+        texNormalHandle = GLES20.glGetAttribLocation(textureProgram, "aNormal")
+        texTexCoordHandle = GLES20.glGetAttribLocation(textureProgram, "aTexCoord")
+        texMVPMatrixHandle = GLES20.glGetUniformLocation(textureProgram, "uMVPMatrix")
+        texModelMatrixHandle = GLES20.glGetUniformLocation(textureProgram, "uModelMatrix")
+        texLightPositionHandle = GLES20.glGetUniformLocation(textureProgram, "uLightPosition")
+        texEmissiveHandle = GLES20.glGetUniformLocation(textureProgram, "uEmissive")
+        texTextureUniformHandle = GLES20.glGetUniformLocation(textureProgram, "uTexture")
+
         // Инициализируем планеты
         initPlanets()
 
         // Создаём куб выбора
         selectionCube = SelectionCube()
 
-// Создаём программу для куба (простой шейдер с цветом)
         cubeProgram = createCubeProgram()
         cubePositionHandle = GLES20.glGetAttribLocation(cubeProgram, "aPosition")
 //        cubeColorHandle = GLES20.glGetAttribLocation(cubeProgram, "aColor")
@@ -129,6 +149,16 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         blackHoleAlphaHandle = GLES20.glGetUniformLocation(blackHoleProgram, "uAlpha")
 
         blackHole = SimpleBlackHole()
+    }
+
+    private fun createTextureProgram(): Int {
+        val vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, ShaderHelper.textureVertexShaderCode)
+        val fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderHelper.textureFragmentShaderCode)
+        val program = GLES20.glCreateProgram()
+        GLES20.glAttachShader(program, vertexShader)
+        GLES20.glAttachShader(program, fragmentShader)
+        GLES20.glLinkProgram(program)
+        return program
     }
 
     private fun createBlackHoleProgram(): Int {
@@ -177,6 +207,26 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         bitmap.recycle()
 
         return textureIds[0]
+    }
+
+    private fun drawNeptune() {
+        GLES20.glUseProgram(textureProgram)
+
+        val modelMatrix = neptune.getModelMatrix(FloatArray(16).also { Matrix.setIdentityM(it, 0) })
+
+        Matrix.multiplyMM(mvpMatrix, 0, viewMatrix, 0, modelMatrix, 0)
+        Matrix.multiplyMM(mvpMatrix, 0, projectionMatrix, 0, mvpMatrix, 0)
+
+        GLES20.glUniformMatrix4fv(texMVPMatrixHandle, 1, false, mvpMatrix, 0)
+        GLES20.glUniformMatrix4fv(texModelMatrixHandle, 1, false, modelMatrix, 0)
+        GLES20.glUniform3f(texLightPositionHandle, lightPosition[0], lightPosition[1], lightPosition[2])
+        GLES20.glUniform1f(texEmissiveHandle, 0f)
+
+        neptune.drawWithWater(textureProgram, texMVPMatrixHandle, texModelMatrixHandle,
+            texPositionHandle, texNormalHandle, texTexCoordHandle,
+            texTextureUniformHandle)
+
+        GLES20.glUseProgram(program)
     }
 
     private fun drawBackground() {
@@ -288,7 +338,7 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         jupiter.name = "Юпитер"
 
         // Добавьте в initPlanets:
-        neptune = Planet(0.22f, 48, 48, floatArrayOf(0.0f, 0.0f, 0.8f, 1.0f)) // Синий
+        neptune = WaterPlanet(context, 0.22f, 48, 48, floatArrayOf(0.0f, 0.0f, 0.8f, 1.0f))
         neptune.orbitRadius = 5.0f
         neptune.orbitSpeed = 2f
         neptune.rotationSpeed = 300f
@@ -417,24 +467,22 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         val deltaTime = (currentTime - previousTime) / 1000f
         previousTime = currentTime
 
-        // Обновляем позицию чёрной дыры (пролетает по диагонали)
         blackHoleX += deltaTime * 1.2f
         blackHoleY -= deltaTime * 0.8f
         blackHolePhase += deltaTime * 3f
 
-        // Если улетела за экран - возвращаем в начало
         if (blackHoleX > 6f || blackHoleY < -4f) {
             blackHoleX = -6f
             blackHoleY = 4f
         }
 
-        // Рисуем чёрную дыру (2. после фона)
+        // Рисуем чёрную дыру
         drawBlackHole()
 
         // Обновляем позиции планет
         updatePlanets(deltaTime)
 
-        // Устанавливаем позицию света (Солнце в центре)
+        // Устанавливаем позицию света
         GLES20.glUniform3f(lightPositionHandle, lightPosition[0], lightPosition[1], lightPosition[2])
 
         // Рисуем Солнце
@@ -455,13 +503,13 @@ class SolarSystemRenderer(private val context: Context) : GLSurfaceView.Renderer
         // Рисуем Юпитер
         drawPlanet(jupiter, FloatArray(16).also { Matrix.setIdentityM(it, 0) })
 
-        drawPlanet(neptune, FloatArray(16).also { Matrix.setIdentityM(it, 0) })
-
+//        drawPlanet(neptune, FloatArray(16).also { Matrix.setIdentityM(it, 0) })
+        drawNeptune()
         // Обновляем угол вращения куба
         cubeRotationAngle += deltaTime * 100f
         if (cubeRotationAngle > 360f) cubeRotationAngle -= 360f
 
-        drawSelectionCube()  // 3. Куб поверх всего
+        drawSelectionCube()
     }
 
     private fun updatePlanets(deltaTime: Float) {

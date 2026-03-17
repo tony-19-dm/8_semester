@@ -87,10 +87,63 @@ object ShaderHelper {
         uniform float uAlpha;
         void main() {
             float dist = length(vPosition);
-            // Прозрачность увеличивается к краям (dist ближе к 1)
             float alpha = 1.0 - dist * dist;
             alpha = clamp(alpha, 0.0, 1.0);
             gl_FragColor = vec4(0.0, 0.0, 0.0, alpha * uAlpha);
         }
     """.trimIndent()
+    // Вершинный шейдер с текстурными координатами
+    val textureVertexShaderCode = """
+    uniform mat4 uMVPMatrix;
+    uniform mat4 uModelMatrix;
+    attribute vec4 aPosition;
+    attribute vec3 aNormal;
+    attribute vec2 aTexCoord;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    varying vec2 vTexCoord;
+    
+    void main() {
+        gl_Position = uMVPMatrix * aPosition;
+        vPosition = vec3(uModelMatrix * aPosition);
+        vNormal = vec3(uModelMatrix * vec4(aNormal, 0.0));
+        vTexCoord = aTexCoord;
+    }
+""".trimIndent()
+
+    // Фрагментный шейдер с текстурой и освещением
+    val textureFragmentShaderCode = """
+    precision mediump float;
+    uniform vec3 uLightPosition;
+    uniform float uEmissive;
+    uniform sampler2D uTexture;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    varying vec2 vTexCoord;
+    
+    void main() {
+        vec3 normal = normalize(vNormal);
+        vec3 lightDir = normalize(uLightPosition - vPosition);
+        vec3 viewDir = vec3(0.0, 0.0, 1.0);
+        
+        // Ambient
+        float ambient = 0.3;
+        
+        // Diffuse
+        float diffuse = max(dot(normal, lightDir), 0.0);
+        
+        // Specular
+        vec3 reflectDir = reflect(-lightDir, normal);
+        float specular = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+        
+        // Цвет из текстуры
+        vec4 texColor = texture2D(uTexture, vTexCoord);
+        
+        // Эмиссивная компонента (для Солнца)
+        vec3 emissive = uEmissive * texColor.rgb;
+        
+        vec3 finalColor = texColor.rgb * (ambient + diffuse + specular * 0.5) + emissive;
+        gl_FragColor = vec4(finalColor, texColor.a);
+    }
+""".trimIndent()
 }
